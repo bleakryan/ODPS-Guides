@@ -123,6 +123,152 @@ const guides = [
         alt: "ODPS uBook guide page: Step 4, Confirm the selected resource and verify the green successful booking message."
       }
     ]
+  },
+  {
+    id: "atamis-standing-operating-procedures",
+    shortTitle: "Atamis SOPs",
+    kicker: "Atamis governance",
+    title: "ODPS Atamis Standard Operating Procedures (SOPs)",
+    description:
+      "A 21-page ODPS reference covering workflow management, Workplans, external references, document management, sourcing thresholds, contract management, benefits capture and savings reporting.",
+    duration: "Reference guide",
+    coverTitle: "Atamis Standing<br>Operating Procedures",
+    pageLabel: "Page",
+    railLabel: "Document pages",
+    currentLabel: "Current page",
+    download: {
+      url: "assets/downloads/ODPS_Atamis_Standing_Operating_Procedures.pdf",
+      filename: "ODPS ODPS Atamis Standard Operating Procedures (SOPs).pdf",
+      label: "Download PDF"
+    },
+    pages: [
+      {
+        title: 'Atamis SOPs',
+        description: 'Cover page for the ODPS Atamis Standard Operating Procedures reference.',
+        image: "assets/atamis-sop-page-01.png",
+        alt: 'Cover of the ODPS ODPS Atamis Standard Operating Procedures (SOPs) guide.'
+      },
+      {
+        title: 'Purpose, scope & procurement lifecycle',
+        description: 'Sets out the purpose and scope of the SOPs and illustrates the Atamis lifecycle from Workplan to Project to Contract.',
+        image: "assets/atamis-sop-page-02.png",
+        alt: 'Atamis SOP page showing purpose, scope and the Workplan to Project to Contract procurement lifecycle.'
+      },
+      {
+        title: 'Document control & version history',
+        description: 'Shows document control information, review frequency and the version history table.',
+        image: "assets/atamis-sop-page-03.png",
+        alt: 'Atamis SOP page showing document control and version history.'
+      },
+      {
+        title: 'Contents',
+        description: 'Lists the nine ODPS standard operating procedures contained in the document.',
+        image: "assets/atamis-sop-page-04.png",
+        alt: 'Contents page for the ODPS ODPS Atamis Standard Operating Procedures (SOPs).'
+      },
+      {
+        title: 'Workflow Management SOP',
+        description: 'Defines when procurement activity should enter Atamis through a Workplan, Project or Contract and the sourcing approach by value and scenario.',
+        image: "assets/atamis-sop-page-05.png",
+        alt: 'ODPS Workflow Management SOP page with guiding principles and workflow thresholds.'
+      },
+      {
+        title: 'Workplan SOP - stage definitions',
+        description: 'Defines the Atamis Workplan stages from Draft and Pre-procurement through Pipeline, Procurement, Contract Management, Renewal Planning, Completed and Abandoned.',
+        image: "assets/atamis-sop-page-06.png",
+        alt: 'ODPS Workplan SOP page showing Workplan stage definitions and governance.'
+      },
+      {
+        title: 'Workplan SOP - required fields',
+        description: 'Sets out system-mandated and ODPS-mandated Workplan fields required as activity progresses through the stages.',
+        image: "assets/atamis-sop-page-07.png",
+        alt: 'ODPS Workplan SOP page showing system-mandated and ODPS-mandated fields.'
+      },
+      {
+        title: 'Workplan SOP - supplementary descriptions',
+        description: 'Provides supplementary definitions for ODPS Workplan fields including team ownership, commercial roles, external reference, RAG and stakeholder fields.',
+        image: "assets/atamis-sop-page-08.png",
+        alt: 'ODPS Workplan SOP page with supplementary Workplan field descriptions.'
+      },
+      {
+        title: 'External Reference SOP - filing structure',
+        description: 'Defines the external reference approach linking Atamis records to SharePoint and shows the ODPS category and project-folder hierarchy.',
+        image: "assets/atamis-sop-page-09.png",
+        alt: 'ODPS External Reference SOP page with SharePoint filing structure and naming principles.'
+      },
+      {
+        title: 'External Reference SOP - category prefixes',
+        description: 'Lists category prefixes and example external references for ODPS procurement categories.',
+        image: "assets/atamis-sop-page-10.png",
+        alt: 'ODPS External Reference SOP page listing category prefixes and example references.'
+      },
+      {
+        title: 'Document Management SOP',
+        description: 'Defines document storage rules across Atamis and SharePoint and shows the standard ODPS folder structure.',
+        image: "assets/atamis-sop-page-11.png",
+        alt: 'ODPS Document Management SOP page showing document management principles and folder structure.'
+      },
+      {
+        title: 'Workplan Team Management SOP - process',
+        description: 'Defines how Workplan Groups should be assigned and the six steps for adding the appropriate ODPS team with edit permission.',
+        image: "assets/atamis-sop-page-12.png",
+        alt: 'ODPS Workplan Team Management SOP page with the process for adding a Workplan Group.'
+      },
+      {
+        title: 'Workplan Team Management SOP - screenshots',
+        description: 'Shows the Atamis screens for selecting the Team tab, creating a new team member, choosing Workplan Group and saving the ODPS team with edit permission.',
+        image: "assets/atamis-sop-page-13.png",
+        alt: 'ODPS Workplan Team Management SOP screenshots for adding a Workplan Group.'
+      },
+      {
+        title: 'Sourcing Routes & Procurement Thresholds SOP',
+        description: 'Defines ODPS sourcing routes, thresholds, minimum quote requirements and when Atamis Health System project templates should be used.',
+        image: "assets/atamis-sop-page-14.png",
+        alt: 'ODPS Sourcing Routes and Procurement Thresholds SOP page with sourcing threshold table.'
+      },
+      {
+        title: 'Contract Management SOP - mandatory fields',
+        description: 'Defines the ODPS-mandated Contract Module fields and supplementary definitions used to support contract governance and auditability.',
+        image: "assets/atamis-sop-page-15.png",
+        alt: 'ODPS Contract Management SOP page showing mandatory contract fields and definitions.'
+      },
+      {
+        title: 'Contract Management SOP - KPI tab',
+        description: 'Sets out the guiding principles for use of the Atamis KPI module, including requirements for higher-value contracts and performance reporting.',
+        image: "assets/atamis-sop-page-16.png",
+        alt: 'ODPS Contract Management SOP page with KPI tab guiding principles.'
+      },
+      {
+        title: 'Benefits Capture SOP - lifecycle',
+        description: 'Introduces the Forecast to Publish to Validate benefits lifecycle and the approach to recording planned benefits and savings.',
+        image: "assets/atamis-sop-page-17.png",
+        alt: 'ODPS Benefits Capture SOP page showing the benefits lifecycle model.'
+      },
+      {
+        title: 'Benefits Capture SOP - savings attribution',
+        description: 'Sets out Workplan and Contract Module savings attribution rules and core controls for baselines, net benefit and avoiding duplication.',
+        image: "assets/atamis-sop-page-18.png",
+        alt: 'ODPS Benefits Capture SOP page covering savings attribution and core controls.'
+      },
+      {
+        title: 'Benefits Capture SOP - forecast to achieve',
+        description: 'Defines the staged process from Plan and Forecast through Publish, Contract and Achieve for benefits and savings.',
+        image: "assets/atamis-sop-page-19.png",
+        alt: 'ODPS Benefits Capture SOP page describing stages from plan and forecast through achieve.'
+      },
+      {
+        title: 'Savings Reporting Standards',
+        description: 'Defines standard ODPS savings reporting outputs, the reporting framework and the use of Atamis Workplan and Contract data.',
+        image: "assets/atamis-sop-page-20.png",
+        alt: 'ODPS Savings Reporting Standards page showing standard outputs and reporting framework.'
+      },
+      {
+        title: 'Savings Reporting - operating model & controls',
+        description: 'Sets out the monthly standard operating cadence, controlled reporting outputs, traceability requirements and variance review controls.',
+        image: "assets/atamis-sop-page-21.png",
+        alt: 'ODPS Savings Reporting Standards page showing the standard operating model and reporting controls.'
+      }
+    ]
   }
 ];
 

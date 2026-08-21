@@ -36,3 +36,5 @@ No framework or build process is required.
 
 - ImageNow PDF download available from the guide card and reader
 - E-Sign guide updated to Version 2.2 with all five pages and downloadable source PDF
+
+- ODPS Atamis Standard Operating Procedures (SOPs): all 21 pages plus downloadable source PDF
