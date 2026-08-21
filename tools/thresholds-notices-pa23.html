@@ -1,0 +1,2684 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#003d78" />
+  <title>Thresholds & Notices (PA23) Decision Tree | ODPS</title>
+  <style>
+    :root {
+      --nhs-blue: #005eb8;
+      --deep-blue: #003d78;
+      --navy: #072b61;
+      --ink: #102a43;
+      --muted: #5b7087;
+      --teal: #008a96;
+      --teal-soft: #e1f4f4;
+      --bg: #f3f7fa;
+      --paper: #fff;
+      --line: #d7e4ee;
+      --green: #2f7d32;
+      --green-soft: #edf8ef;
+      --amber: #7a5a12;
+      --amber-soft: #fff8df;
+      --red: #8b3a3a;
+      --red-soft: #fff3f3;
+      --shadow: 0 22px 60px rgba(10,58,102,.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      background: var(--bg);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 4%, rgba(0,138,150,.07), transparent 25rem),
+        var(--bg);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input { font: inherit; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      color: #fff;
+      background: linear-gradient(110deg, #003f7d, #005eb8 75%, #004987);
+      border-bottom: 1px solid rgba(255,255,255,.16);
+      box-shadow: 0 8px 28px rgba(0,38,82,.17);
+    }
+
+    .header-inner {
+      width: min(1180px, calc(100% - 36px));
+      min-height: 70px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .back-link {
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 8px;
+    }
+
+    .back-link svg { width: 19px; height: 19px; }
+
+    .header-brand {
+      text-align: center;
+    }
+
+    .header-brand strong {
+      display: block;
+      font-size: 14px;
+      letter-spacing: .01em;
+    }
+
+    .header-brand span {
+      display: block;
+      margin-top: 2px;
+      color: rgba(255,255,255,.74);
+      font-size: 10px;
+    }
+
+    .nhs-link {
+      justify-self: end;
+      display: inline-flex;
+      align-items: center;
+      line-height: 0;
+      border-radius: 3px;
+    }
+
+    .nhs-link img {
+      display: block;
+      width: 102px;
+      max-height: 43px;
+      object-fit: contain;
+    }
+
+    .nhs-link:focus-visible,
+    .back-link:focus-visible {
+      outline: 3px solid rgba(255,255,255,.9);
+      outline-offset: 4px;
+    }
+
+    .shell {
+      width: min(980px, calc(100% - 34px));
+      margin: 0 auto;
+    }
+
+    .tool-heading {
+      padding: 46px 0 24px;
+    }
+
+    .eyebrow {
+      color: var(--teal);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 9px 0 11px;
+      color: var(--navy);
+      font-size: clamp(33px, 5vw, 48px);
+      line-height: 1.04;
+      letter-spacing: -.045em;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .controlled-note {
+      margin-top: 17px;
+      padding: 13px 16px;
+      border: 1px solid #b9d7de;
+      border-radius: 12px;
+      background: #f0fafb;
+      color: var(--deep-blue);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .progress-wrap {
+      margin: 8px 0 18px;
+      padding: 14px 17px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.86);
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 9px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .progress-track {
+      height: 7px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: #dce7ef;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), var(--nhs-blue));
+      transition: width .2s ease;
+    }
+
+    .card {
+      margin-bottom: 42px;
+      padding: 36px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255,255,255,.97);
+      box-shadow: var(--shadow);
+    }
+
+    .screen[hidden] { display: none; }
+
+    .screen h2 {
+      margin: 0 0 13px;
+      color: var(--navy);
+      font-size: clamp(24px, 4vw, 31px);
+      line-height: 1.18;
+      letter-spacing: -.03em;
+    }
+
+    .screen-intro {
+      margin: 0 0 23px;
+      color: var(--muted);
+      line-height: 1.67;
+    }
+
+    .callout {
+      margin: 0 0 20px;
+      padding: 15px 17px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.58;
+    }
+
+    .callout.info {
+      border: 1px solid #acd4da;
+      border-left: 4px solid var(--teal);
+      background: #effafa;
+      color: var(--deep-blue);
+    }
+
+    .callout.warning {
+      border: 1px solid #e8d38f;
+      border-left: 4px solid #c19017;
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .callout.stop {
+      border: 1px solid #dfb7b7;
+      border-left: 4px solid #b64c4c;
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .help-row {
+      margin: -8px 0 18px;
+    }
+
+    .help-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 9px;
+      border: 1px solid #b8d4e3;
+      border-radius: 999px;
+      background: #f6fbfd;
+      color: var(--deep-blue);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      transition: background .16s ease, border-color .16s ease;
+    }
+
+    .help-button:hover {
+      background: #edf7fa;
+      border-color: #88b6ce;
+    }
+
+    .help-button .help-icon {
+      width: 17px;
+      height: 17px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--teal-soft);
+      color: var(--teal);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .help-panel {
+      margin-top: 10px;
+      padding: 14px 16px;
+      border: 1px solid #b8d9df;
+      border-left: 4px solid var(--teal);
+      border-radius: 11px;
+      background: #f1fafb;
+      color: var(--deep-blue);
+      font-size: 12.5px;
+      line-height: 1.58;
+    }
+
+    .help-panel[hidden] {
+      display: none;
+    }
+
+    .help-panel strong {
+      color: var(--navy);
+    }
+
+    .help-panel ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    .help-panel li + li {
+      margin-top: 6px;
+    }
+
+    .choice-grid {
+      display: grid;
+      gap: 11px;
+    }
+
+    .choice-button {
+      width: 100%;
+      min-height: 55px;
+      padding: 14px 17px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      border: 1px solid #c9d9e5;
+      border-radius: 11px;
+      background: #fff;
+      color: var(--deep-blue);
+      text-align: left;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .16s ease, border-color .16s ease, transform .16s ease, box-shadow .16s ease;
+    }
+
+    .choice-button:hover {
+      transform: translateY(-1px);
+      border-color: #7faecb;
+      background: #f4f8fb;
+      box-shadow: 0 8px 20px rgba(10,58,102,.08);
+    }
+
+    .choice-button:focus-visible,
+    .primary-button:focus-visible,
+    .secondary-button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid rgba(0,94,184,.27);
+      outline-offset: 2px;
+    }
+
+    .choice-button small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-weight: 500;
+      line-height: 1.45;
+    }
+
+    .arrow { font-size: 18px; }
+
+    .button-row {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .primary-button,
+    .secondary-button {
+      min-height: 48px;
+      padding: 12px 17px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .primary-button {
+      border: 0;
+      background: linear-gradient(135deg, var(--nhs-blue), var(--deep-blue));
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(0,94,184,.18);
+    }
+
+    .secondary-button {
+      border: 1px solid #c9d9e5;
+      background: #fff;
+      color: var(--deep-blue);
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      margin: 18px 0 8px;
+    }
+
+    .field label {
+      color: var(--navy);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .money-wrap {
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      border: 1px solid #c9d9e5;
+      border-radius: 11px;
+      background: #fff;
+    }
+
+    .money-prefix {
+      padding: 0 0 0 16px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .money-wrap input {
+      width: 100%;
+      min-width: 0;
+      padding: 14px 16px 14px 8px;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 18px;
+      outline: none;
+    }
+
+    .field-help {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 11px;
+      margin: 20px 0 24px;
+    }
+
+    .summary-item {
+      padding: 14px 15px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f7fafc;
+    }
+
+    .summary-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+
+    .summary-item strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--navy);
+      font-size: 15px;
+      line-height: 1.42;
+    }
+
+    .threshold-result {
+      padding: 23px;
+      border: 1px solid #a8d1aa;
+      border-radius: 16px;
+      background: var(--green-soft);
+      text-align: center;
+    }
+
+    .threshold-result .label {
+      color: #4c7550;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .threshold-result .amount {
+      margin: 5px 0;
+      color: var(--green);
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 800;
+      letter-spacing: -.04em;
+    }
+
+    .threshold-result p {
+      margin: 0;
+      color: #49734d;
+      line-height: 1.5;
+    }
+
+    .notice-section {
+      margin-top: 24px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #f8fafc;
+    }
+
+    .notice-section h3 {
+      margin: 0 0 7px;
+      color: var(--navy);
+      font-size: 20px;
+    }
+
+    .notice-section > p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .notice-group + .notice-group { margin-top: 18px; }
+
+    .notice-group h4 {
+      margin: 0 0 9px;
+      color: var(--deep-blue);
+      font-size: 14px;
+    }
+
+    .notice-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .notice-card {
+      padding: 13px 14px;
+      border: 1px solid #dce7ef;
+      border-radius: 11px;
+      background: #fff;
+    }
+
+    .notice-card strong {
+      display: block;
+      color: var(--navy);
+      font-size: 14px;
+    }
+
+    .notice-card p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.52;
+    }
+
+    .notice-card.mandatory { border-left: 4px solid var(--nhs-blue); }
+    .notice-card.contextual { border-left: 4px solid var(--teal); }
+    .notice-card.authority { border-left: 4px solid #8c6e1d; }
+
+    .footer {
+      padding: 28px 0 34px;
+      color: #718397;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    @media (max-width: 680px) {
+      .header-inner {
+        width: calc(100% - 22px);
+        grid-template-columns: auto 1fr auto;
+      }
+
+      .header-brand strong { font-size: 12px; }
+      .header-brand span { display: none; }
+      .back-link span { display: none; }
+      .nhs-link img { width: 88px; max-height: 38px; }
+
+      .shell { width: calc(100% - 20px); }
+      .tool-heading { padding-top: 28px; }
+
+      .card {
+        padding: 24px;
+        border-radius: 17px;
+      }
+
+      .summary-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="back-link" href="../tools.html">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12.5 4-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Tools</span>
+      </a>
+
+      <div class="header-brand">
+        <strong>One Dorset Procurement Service</strong>
+        <span>Procurement Resources</span>
+      </div>
+
+      <a class="nhs-link" href="https://intranet.uhd.nhs.uk/" aria-label="Open UHD intranet">
+        <img src="../assets/nhs-logo.png" alt="NHS" />
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="tool-heading">
+      <div class="shell">
+        <span class="eyebrow">Procurement Act 2023 decision support</span>
+        <h1>Thresholds &amp; Notices (PA23)</h1>
+        <p class="subtitle">
+          Identify the applicable Schedule 1 threshold, test whether the procurement is above threshold,
+          and surface potential PA23 notice requirements based on procurement route and lifecycle triggers.
+        </p>
+        <div class="controlled-note">
+          <strong>Controlled version:</strong> thresholds current for 1 January 2026–31 December 2027;
+          guidance reviewed 21 August 2026. This is a decision-support tool, not legal advice.
+          Always confirm the latest rules and procedure-specific guidance before acting.
+        </div>
+      </div>
+    </section>
+
+    <div class="shell">
+      <div class="progress-wrap" id="progress-wrap" hidden>
+        <div class="progress-top">
+          <span id="progress-text">Assessment</span>
+          <span id="progress-count"></span>
+        </div>
+        <div class="progress-track"><div class="progress-bar" id="progress-bar"></div></div>
+      </div>
+
+      <section class="card" aria-live="polite">
+        <div class="screen" id="screen-start">
+          <h2>Start the PA23 assessment</h2>
+          <div class="callout warning">
+            All threshold values in this tool are <strong>inclusive of VAT</strong>.
+          </div>
+          <p class="screen-intro">
+            The revised flow first checks whether PA23 is in scope, then identifies the authority and contract category,
+            applies the correct commencement-date threshold, compares the estimated contract value, and only then
+            considers route and notice triggers.
+          </p>
+          <div class="callout info">
+            For threshold purposes, NHS Trusts and NHS Foundation Trusts — including UHD — are treated as
+            <strong>central government authorities</strong>.
+          </div>
+          <div class="button-row">
+            <button class="primary-button" id="start-button" type="button">Start assessment <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+
+        <div class="screen" id="screen-question" hidden>
+          <h2 id="question-title"></h2>
+          <p class="screen-intro" id="question-intro"></p>
+          <div id="question-extra"></div>
+          <div class="choice-grid" id="choice-grid"></div>
+          <div class="button-row">
+            <button class="secondary-button" id="back-button" type="button">← Go back</button>
+          </div>
+        </div>
+
+        <div class="screen" id="screen-value" hidden>
+          <h2>What is the estimated contract value?</h2>
+          <p class="screen-intro">
+            Enter the estimated value <strong>including VAT</strong>. The tool will compare it with the applicable
+            Schedule 1 threshold before showing any above-threshold notice pathway.
+          </p>
+          <div class="field">
+            <label for="contract-value">Estimated contract value including VAT</label>
+            <div class="money-wrap">
+              <span class="money-prefix">£</span>
+              <input id="contract-value" type="number" min="0" step="1" inputmode="decimal" placeholder="e.g. 250000" />
+            </div>
+            <div class="field-help">Use the total estimated value for the procurement, not an annual or partial value.</div>
+          </div>
+          <div class="callout warning" id="value-error" hidden>Please enter a valid contract value of £0 or more.</div>
+          <div class="button-row">
+            <button class="primary-button" id="value-continue" type="button">Continue <span aria-hidden="true">→</span></button>
+            <button class="secondary-button history-back" type="button">← Go back</button>
+          </div>
+        </div>
+
+        <div class="screen" id="screen-result" hidden>
+          <h2 id="result-heading">Assessment result</h2>
+          <div id="result-body"></div>
+          <div class="button-row">
+            <button class="primary-button" id="restart-button" type="button">Start new assessment</button>
+            <button class="secondary-button history-back" type="button">← Modify last answer</button>
+            <button class="secondary-button" id="download-button" type="button">Download summary as PDF</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Controlled Environment | One Dorset Procurement Service (ODPS)
+  </footer>
+
+  <script>
+    const screens = {
+      start: document.querySelector("#screen-start"),
+      question: document.querySelector("#screen-question"),
+      value: document.querySelector("#screen-value"),
+      result: document.querySelector("#screen-result")
+    };
+
+    const progressWrap = document.querySelector("#progress-wrap");
+    const progressText = document.querySelector("#progress-text");
+    const progressCount = document.querySelector("#progress-count");
+    const progressBar = document.querySelector("#progress-bar");
+    const questionTitle = document.querySelector("#question-title");
+    const questionIntro = document.querySelector("#question-intro");
+    const questionExtra = document.querySelector("#question-extra");
+    const choiceGrid = document.querySelector("#choice-grid");
+    const valueInput = document.querySelector("#contract-value");
+    const valueError = document.querySelector("#value-error");
+    const resultBody = document.querySelector("#result-body");
+    const resultHeading = document.querySelector("#result-heading");
+
+    const HISTORY_MARKER = "odps-pa23-v2026";
+    const REVIEW_DATE = "21 August 2026";
+
+    const THRESHOLDS = {
+      current: {
+        defenceWorks: 5193000,
+        defenceConcession: 5193000,
+        defenceGoodsServices: 415440,
+        utilitiesWorks: 5193000,
+        utilitiesLightTouch: 884720,
+        utilitiesGoodsServices: 415440,
+        lightTouchConcession: 5372609,
+        lightTouch: 663540,
+        ordinaryConcession: 5193000,
+        ordinaryWorks: 5193000,
+        centralGoodsServices: 135018,
+        subCentralGoodsServices: 207720
+      },
+      legacy: {
+        defenceWorks: 5372609,
+        defenceConcession: 5372609,
+        defenceGoodsServices: 429809,
+        utilitiesWorks: 5372609,
+        utilitiesLightTouch: 884720,
+        utilitiesGoodsServices: 429809,
+        lightTouchConcession: 5372609,
+        lightTouch: 663540,
+        ordinaryConcession: 5372609,
+        ordinaryWorks: 5372609,
+        centralGoodsServices: 139688,
+        subCentralGoodsServices: 214904
+      }
+    };
+
+    const state = {
+      screen: "start",
+      step: null,
+      answers: {},
+      thresholdKey: null,
+      threshold: null,
+      thresholdLabel: null,
+      estimatedValue: null,
+      isAboveThreshold: null,
+      terminalReason: null
+    };
+
+    const stepOrder = [
+      "psr", "exempt", "authority", "regime", "category",
+      "commencement", "value", "route", "userChoice",
+      "marketEngagement", "plannedNotice", "pipelineSpend",
+      "pipelineWindow", "paymentsDate", "result"
+    ];
+
+    function formatCurrency(value) {
+      return new Intl.NumberFormat("en-GB", {
+        style: "currency",
+        currency: "GBP",
+        maximumFractionDigits: 0
+      }).format(value);
+    }
+
+    function cloneState() {
+      return JSON.parse(JSON.stringify(state));
+    }
+
+    function writeHistory(mode = "push") {
+      const snapshot = { marker: HISTORY_MARKER, state: cloneState() };
+      if (mode === "replace") history.replaceState(snapshot, "", location.href);
+      else history.pushState(snapshot, "", location.href);
+    }
+
+    function restoreFromHistory(eventState) {
+      if (!eventState || eventState.marker !== HISTORY_MARKER || !eventState.state) return false;
+
+      Object.keys(state).forEach((key) => delete state[key]);
+      Object.assign(state, JSON.parse(JSON.stringify(eventState.state)));
+      render();
+      return true;
+    }
+
+    function showScreen(name) {
+      Object.entries(screens).forEach(([key, element]) => {
+        element.hidden = key !== name;
+      });
+    }
+
+    function updateProgress() {
+      if (state.screen === "start") {
+        progressWrap.hidden = true;
+        return;
+      }
+
+      progressWrap.hidden = false;
+      const currentKey = state.screen === "value" ? "value" : (state.screen === "result" ? "result" : state.step);
+      const rawIndex = Math.max(0, stepOrder.indexOf(currentKey));
+      const percentage = Math.min(100, Math.max(7, ((rawIndex + 1) / stepOrder.length) * 100));
+
+      progressText.textContent = state.screen === "result" ? "Assessment complete" : "Assessment in progress";
+      progressCount.textContent = state.screen === "result" ? "Result" : `Step ${rawIndex + 1}`;
+      progressBar.style.width = `${percentage}%`;
+    }
+
+    function choice(label, value, description = "") {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "choice-button";
+      button.innerHTML = `
+        <span>${label}${description ? `<small>${description}</small>` : ""}</span>
+        <span class="arrow" aria-hidden="true">→</span>
+      `;
+      button.addEventListener("click", () => answerQuestion(value));
+      choiceGrid.appendChild(button);
+    }
+
+    function setQuestion(title, intro = "", extraHtml = "") {
+      questionTitle.textContent = title;
+      questionIntro.innerHTML = intro;
+      questionExtra.innerHTML = extraHtml;
+      choiceGrid.innerHTML = "";
+    }
+
+    function helpPanel(id, label, content) {
+      return `
+        <div class="help-row">
+          <button class="help-button" type="button"
+                  data-help-toggle="${id}"
+                  aria-expanded="false"
+                  aria-controls="${id}">
+            <span class="help-icon" aria-hidden="true">?</span>
+            <span>${label}</span>
+          </button>
+          <div class="help-panel" id="${id}" hidden>
+            ${content}
+          </div>
+        </div>
+      `;
+    }
+
+    function nextQuestion(step, mode = "push") {
+      state.screen = "question";
+      state.step = step;
+      render();
+      writeHistory(mode);
+    }
+
+    function terminalResult(reason, mode = "push") {
+      state.terminalReason = reason;
+      state.screen = "result";
+      state.step = "result";
+      render();
+      writeHistory(mode);
+    }
+
+    function thresholdForCurrentState() {
+      const table = state.answers.commencement === "pre2026" ? THRESHOLDS.legacy : THRESHOLDS.current;
+      const authority = state.answers.authority;
+      const regime = state.answers.regime;
+      const category = state.answers.category;
+
+      if (regime === "defence") {
+        if (category === "works") return ["defenceWorks", table.defenceWorks, "Defence & security works"];
+        if (category === "concession") return ["defenceConcession", table.defenceConcession, "Defence & security concession"];
+        if (category === "goodsServices") return ["defenceGoodsServices", table.defenceGoodsServices, "Defence & security goods/services"];
+      }
+
+      if (regime === "utilities") {
+        if (category === "works") return ["utilitiesWorks", table.utilitiesWorks, "Utilities works"];
+        if (category === "lightTouch") return ["utilitiesLightTouch", table.utilitiesLightTouch, "Utilities light-touch"];
+        if (category === "goodsServices") return ["utilitiesGoodsServices", table.utilitiesGoodsServices, "Utilities goods/services"];
+      }
+
+      if (regime === "ordinary") {
+        if (category === "lightTouchConcession") return ["lightTouchConcession", table.lightTouchConcession, "Light-touch concession"];
+        if (category === "lightTouch") return ["lightTouch", table.lightTouch, "Light-touch services"];
+        if (category === "concession") return ["ordinaryConcession", table.ordinaryConcession, "Ordinary concession"];
+        if (category === "works") return ["ordinaryWorks", table.ordinaryWorks, "Ordinary works"];
+        if (category === "goodsServices") {
+          if (authority === "nhs" || authority === "central") {
+            return ["centralGoodsServices", table.centralGoodsServices, "Central government goods/services"];
+          }
+          if (authority === "subCentral") {
+            return ["subCentralGoodsServices", table.subCentralGoodsServices, "Sub-central government goods/services"];
+          }
+          return [null, null, "Goods/services — authority classification requires review"];
+        }
+      }
+
+      return [null, null, "Threshold requires review"];
+    }
+
+    function isLightTouch() {
+      return state.answers.category === "lightTouch" ||
+             state.answers.category === "lightTouchConcession";
+    }
+
+    function isConcession() {
+      return state.answers.category === "concession" ||
+             state.answers.category === "lightTouchConcession";
+    }
+
+    function isPrivateUtility() {
+      return state.answers.authority === "privateUtility";
+    }
+
+    function answerQuestion(value) {
+      const step = state.step;
+      state.answers[step] = value;
+
+      if (step === "psr") {
+        if (value === "yes") {
+          terminalResult("psr");
+          return;
+        }
+        nextQuestion("exempt");
+        return;
+      }
+
+      if (step === "exempt") {
+        if (value === "yes") {
+          terminalResult("exempt");
+          return;
+        }
+        nextQuestion("authority");
+        return;
+      }
+
+      if (step === "authority") {
+        if (value === "unsure") {
+          terminalResult("authorityReview");
+          return;
+        }
+        nextQuestion("regime");
+        return;
+      }
+
+      if (step === "regime") {
+        if (state.answers.authority === "privateUtility" && value !== "utilities") {
+          terminalResult("privateUtilityReview");
+          return;
+        }
+        nextQuestion("category");
+        return;
+      }
+
+      if (step === "category") {
+        nextQuestion("commencement");
+        return;
+      }
+
+      if (step === "commencement") {
+        const [key, threshold, label] = thresholdForCurrentState();
+        state.thresholdKey = key;
+        state.threshold = threshold;
+        state.thresholdLabel = label;
+
+        if (!threshold) {
+          terminalResult("thresholdReview");
+          return;
+        }
+
+        state.screen = "value";
+        state.step = "value";
+        render();
+        writeHistory("push");
+        return;
+      }
+
+      if (step === "route") {
+        if (value === "direct") {
+          nextQuestion("userChoice");
+          return;
+        }
+        nextQuestion("marketEngagement");
+        return;
+      }
+
+      if (step === "userChoice") {
+        nextQuestion("marketEngagement");
+        return;
+      }
+
+      if (step === "marketEngagement") {
+        nextQuestion("plannedNotice");
+        return;
+      }
+
+      if (step === "plannedNotice") {
+        if (!isPrivateUtility()) {
+          nextQuestion("pipelineSpend");
+        } else {
+          nextQuestion("paymentsDate");
+        }
+        return;
+      }
+
+      if (step === "pipelineSpend") {
+        const routeSupportsPipeline = state.answers.route === "competitive" || state.answers.route === "direct";
+        if (value === "yes" && state.estimatedValue > 2000000 && routeSupportsPipeline) {
+          nextQuestion("pipelineWindow");
+        } else {
+          nextQuestion("paymentsDate");
+        }
+        return;
+      }
+
+      if (step === "pipelineWindow") {
+        nextQuestion("paymentsDate");
+        return;
+      }
+
+      if (step === "paymentsDate") {
+        state.screen = "result";
+        state.step = "result";
+        render();
+        writeHistory("push");
+      }
+    }
+
+    function renderQuestion() {
+      const step = state.step;
+
+      if (step === "psr") {
+        setQuestion(
+          "Is this regulated health procurement under the Provider Selection Regime (PSR)?",
+          "For an NHS-facing assessment, this scope gate comes first. Regulated health procurement under the PSR is outside the Procurement Act 2023 pathway."
+        );
+        choice("Yes — PSR applies", "yes");
+        choice("No — continue with PA23", "no");
+      }
+
+      if (step === "exempt") {
+        setQuestion(
+          "Is this an exempted contract under PA23?",
+          "If the contract is exempt, the public-contract threshold and notice pathway in this tool should not be used.",
+          helpPanel(
+            "help-exempt",
+            "Examples of exempt contracts",
+            `
+              <strong>Examples that may fall within Schedule 2 include:</strong>
+              <ul>
+                <li><strong>In-house / controlled-person arrangements</strong>, such as a qualifying contract with a controlled local-authority or public-body company where the statutory control and activity tests are met.</li>
+                <li><strong>Qualifying public-public cooperation</strong> between public authorities.</li>
+                <li><strong>Land and existing buildings</strong>, for example purchasing or renting a specific existing building or site.</li>
+                <li><strong>Certain dispute-resolution and legal services</strong>, such as arbitration, mediation and specified legal representation connected with proceedings.</li>
+                <li><strong>Certain financial arrangements</strong>, including loans and specified investment/financial-instrument services.</li>
+                <li><strong>Employment contracts and public-office appointments</strong> (but not ordinary agency/personnel-placement services).</li>
+                <li><strong>Specified emergency services</strong> supplied by qualifying non-profit organisations, and certain qualifying R&amp;D contracts.</li>
+                <li><strong>National-security procurements</strong> where the statutory national-security exemption is properly justified.</li>
+              </ul>
+              <p style="margin:10px 0 0;"><strong>Important:</strong> these are examples only. An exemption applies only where the precise Schedule 2 conditions are met; do not select “Yes” simply because a contract looks similar.</p>
+            `
+          )
+        );
+        choice("Yes — it is exempt", "yes");
+        choice("No — it is not exempt", "no");
+      }
+
+      if (step === "authority") {
+        setQuestion(
+          "Which best describes the contracting authority?",
+          "Central government classification should follow Schedule 2 to the Procurement Regulations 2024. NHS Trusts and NHS Foundation Trusts are central government authorities for threshold purposes."
+        );
+        choice("NHS Trust / NHS Foundation Trust", "nhs", "Includes University Hospitals Dorset NHS Foundation Trust (UHD).");
+        choice("Other central government authority", "central", "Use the Schedule 2 legal classification, rather than informal examples.");
+        choice("Sub-central government authority", "subCentral");
+        choice("Private utility", "privateUtility", "Private utilities have specific notice exceptions.");
+        choice("Unsure / another classification", "unsure", "Stop and confirm the legal authority classification before using a threshold.");
+      }
+
+      if (step === "regime") {
+        setQuestion(
+          "Which procurement regime/category applies?",
+          "The threshold matrix is built around the Schedule 1 contract categories rather than the old question order."
+        );
+        choice("Ordinary / other procurement", "ordinary");
+        choice("Defence & security procurement", "defence");
+        choice("Utilities procurement", "utilities");
+      }
+
+      if (step === "category") {
+        const regime = state.answers.regime;
+
+        if (regime === "defence") {
+          setQuestion(
+            "What is the main defence & security contract category?",
+            "",
+            helpPanel(
+              "help-categories-defence",
+              "Examples of each category",
+              `
+                <ul>
+                  <li><strong>Works:</strong> construction or major building/civil-engineering activity for a defence or security requirement, for example construction or substantial refurbishment of a defence facility.</li>
+                  <li><strong>Concession:</strong> a defence/security works or services arrangement where at least part of the supplier's consideration is the right to exploit the works/services and the supplier bears real operating risk.</li>
+                  <li><strong>Goods or services:</strong> defence/security equipment, supplies, maintenance, support or other services that are not principally works, a concession or light-touch contract.</li>
+                </ul>
+                <p style="margin:10px 0 0;">These are illustrations only; apply the statutory defence/security definitions and mixed-procurement rules where relevant.</p>
+              `
+            )
+          );
+          choice("Works", "works");
+          choice("Concession", "concession");
+          choice("Goods or services", "goodsServices");
+        } else if (regime === "utilities") {
+          setQuestion(
+            "What is the utilities contract category?",
+            "For utilities classification, use the current Schedule 4 / Utilities Contracts guidance rather than relying on broad examples.",
+            helpPanel(
+              "help-categories-utilities",
+              "Examples of each category",
+              `
+                <ul>
+                  <li><strong>Works:</strong> construction or civil-engineering works connected with a qualifying utility activity, such as building or substantially altering utility infrastructure.</li>
+                  <li><strong>Light-touch services:</strong> qualifying social, health, education or other listed light-touch services procured by a utility, where the service falls within the applicable CPV-based light-touch list.</li>
+                  <li><strong>Other goods or services:</strong> supplies, equipment, maintenance, professional or operational services for the utility activity that are not works or light-touch services.</li>
+                </ul>
+                <p style="margin:10px 0 0;">The utility activity itself must first fall within the PA23 utilities regime; use the current Schedule 4 guidance for classification.</p>
+              `
+            )
+          );
+          choice("Works", "works");
+          choice(
+            "Light-touch services",
+            "lightTouch",
+            "The service must fall within the applicable light-touch classification."
+          );
+          choice("Other goods or services", "goodsServices");
+        } else {
+          setQuestion(
+            "What is the contract category?",
+            "A light-touch service must be wholly or mainly a service specified in Schedule 1 to the Procurement Regulations 2024 (CPV-based).",
+            helpPanel(
+              "help-categories-ordinary",
+              "Examples of each category",
+              `
+                <ul>
+                  <li><strong>Works:</strong> construction, building or civil-engineering activity where works are the main purpose of the contract — for example constructing or substantially refurbishing a building.</li>
+                  <li><strong>Concession:</strong> works or services where the supplier receives, at least in part, the right to exploit the works/services and bears real operating risk — for example an appropriately structured service or facility concession.</li>
+                  <li><strong>Light-touch concession:</strong> a concession whose service is within the qualifying light-touch services and also meets the concession exploitation/operating-risk test.</li>
+                  <li><strong>Other light-touch services:</strong> certain social, health, education and other public services supplied directly to individuals or groups, where the service is wholly or mainly within the specified light-touch CPV categories.</li>
+                  <li><strong>Goods or services:</strong> typical supplies or non-works services that do not fall into one of the special categories, such as equipment, software, office supplies, consultancy or support services.</li>
+                </ul>
+                <p style="margin:10px 0 0;">For mixed contracts, classify using the statutory mixed-procurement rules rather than selecting whichever example feels closest.</p>
+              `
+            )
+          );
+          choice("Works", "works");
+          choice("Concession", "concession");
+          choice("Light-touch concession", "lightTouchConcession");
+          choice("Other light-touch services", "lightTouch");
+          choice("Goods or services", "goodsServices");
+        }
+      }
+
+      if (step === "commencement") {
+        setQuestion(
+          "When did the procurement commence?",
+          "The revised 2026–27 thresholds apply to procurements commenced on or after 1 January 2026. Earlier procurements retain the previous threshold treatment."
+        );
+        choice("On or after 1 January 2026", "current");
+        choice("Before 1 January 2026", "pre2026");
+      }
+
+      if (step === "route") {
+        setQuestion(
+          "What procurement route is being used?",
+          "Notice requirements depend on the procurement route, not simply the threshold value."
+        );
+        choice("Competitive tendering procedure", "competitive");
+        choice("Direct award", "direct");
+        choice("Framework call-off", "framework", "Framework call-offs have separate notice rules; UK4 is not automatically the route notice.");
+        choice("Dynamic market / other route", "dynamic", "Confirm route-specific notice requirements against current guidance.");
+      }
+
+      if (step === "userChoice") {
+        setQuestion(
+          "Is this a user-choice contract direct award?",
+          "User-choice direct awards are a key exception to several normal notice requirements.",
+          helpPanel(
+            "help-user-choice",
+            "What does “User Choice” mean?",
+            `
+              <strong>User Choice is a specific direct-award justification, not a general preference to use a supplier.</strong>
+              <p style="margin:8px 0 0;">It applies where the services would ordinarily be light-touch services, are supplied for the benefit of a particular individual, and legislation requires the authority to have regard to that individual's — or their carer's — views about who should provide the service.</p>
+              <p style="margin:8px 0 0;">To rely on it, the individual/carer must have expressed a supplier preference (or the service can only be provided by one supplier), and the authority must consider that a competitive tendering procedure would not be in the individual's best interests.</p>
+              <p style="margin:8px 0 0;"><strong>Example:</strong> an individual receiving a qualifying care service has a legally relevant choice or preference over who provides that personal service, and the statutory conditions for the PA23 user-choice justification are met.</p>
+            `
+          )
+        );
+        choice("Yes — user-choice direct award", "yes");
+        choice("No", "no");
+      }
+
+      if (step === "marketEngagement") {
+        setQuestion(
+          "Will preliminary market engagement be carried out?",
+          "If preliminary market engagement is carried out, UK2 should be published before the Tender Notice or the Tender Notice should explain why UK2 was not published. Private utilities are an exception."
+        );
+        choice("Yes", "yes");
+        choice("No", "no");
+      }
+
+      if (step === "plannedNotice") {
+        setQuestion(
+          "Do you intend to use a Planned Procurement Notice (UK3)?",
+          "UK3 is optional. To qualify for shortened tender periods, it must be published at least 40 days and no more than one year before the Tender Notice."
+        );
+        choice("Yes", "yes");
+        choice("No", "no");
+      }
+
+      if (step === "pipelineSpend") {
+        setQuestion(
+          "Does the authority expect to pay more than £100 million under relevant contracts in the coming financial year?",
+          "This is an authority-level Pipeline Notice (UK1) test. The calculation uses expected payments under existing and future relevant contracts. Private utilities are exempt from UK1."
+        );
+        choice("Yes", "yes");
+        choice("No", "no");
+        choice("Unsure", "unsure");
+      }
+
+      if (step === "pipelineWindow") {
+        setQuestion(
+          "Is this procurement expected to have a UK4 or UK5 during the relevant 18-month pipeline reporting period?",
+          "Because this procurement is over £2 million, a “Yes” answer indicates it should be considered for inclusion in the Pipeline Notice where the authority-level £100m trigger is met."
+        );
+        choice("Yes", "yes");
+        choice("No", "no");
+        choice("Unsure", "unsure");
+      }
+
+      if (step === "paymentsDate") {
+        setQuestion(
+          "Did this procurement commence on or after 1 April 2026?",
+          "This date determines whether the section 70 / UK8 quarterly payment-information requirement can apply to individual payments over £30,000 including VAT, subject to its exceptions."
+        );
+        choice("Yes", "yes");
+        choice("No", "no");
+        choice("Unsure", "unsure");
+      }
+    }
+
+    function continueFromValue() {
+      const numericValue = Number(valueInput.value);
+
+      if (!Number.isFinite(numericValue) || numericValue < 0) {
+        valueError.hidden = false;
+        return;
+      }
+
+      valueError.hidden = true;
+      state.estimatedValue = numericValue;
+      state.isAboveThreshold = numericValue >= state.threshold;
+      state.answers.value = numericValue;
+
+      if (!state.isAboveThreshold) {
+        state.screen = "result";
+        state.step = "result";
+        render();
+        writeHistory("push");
+        return;
+      }
+
+      nextQuestion("route");
+    }
+
+    function notice(name, description, type = "mandatory") {
+      return { name, description, type };
+    }
+
+    function buildNoticeGroups() {
+      const mandatory = [];
+      const contextual = [];
+      const authority = [];
+
+      const route = state.answers.route;
+      const userChoice = state.answers.userChoice === "yes";
+      const privateUtility = isPrivateUtility();
+      const lightTouch = isLightTouch();
+      const concession = isConcession();
+      const defence = state.answers.regime === "defence";
+
+      if (state.answers.marketEngagement === "yes" && !privateUtility) {
+        contextual.push(notice(
+          "UK2 Preliminary Market Engagement Notice",
+          "If preliminary market engagement is carried out, publish UK2 before the Tender Notice or explain in the Tender Notice why UK2 was not published.",
+          "contextual"
+        ));
+      }
+
+      if (state.answers.plannedNotice === "yes") {
+        contextual.push(notice(
+          "UK3 Planned Procurement Notice",
+          "Optional. For shortened tender periods, publish at least 40 days and no more than one year before the Tender Notice.",
+          "contextual"
+        ));
+      }
+
+      if (route === "competitive") {
+        mandatory.push(notice(
+          "UK4 Tender Notice",
+          "Required to commence a competitive tendering procedure. It is not the notice used for a direct award."
+        ));
+      } else if (route === "direct") {
+        if (!userChoice) {
+          mandatory.push(notice(
+            "UK5 Transparency Notice",
+            "Mandatory before most direct awards. User-choice contracts are a key exception."
+          ));
+        } else {
+          contextual.push(notice(
+            "UK5 user-choice exception",
+            "The change report identifies user-choice direct awards as a key exception to the normal UK5 requirement.",
+            "contextual"
+          ));
+        }
+      } else if (route === "framework") {
+        contextual.push(notice(
+          "Framework call-off route",
+          "Framework call-offs have separate rules. Do not assume UK4 simply because the procurement is above threshold.",
+          "contextual"
+        ));
+      } else {
+        contextual.push(notice(
+          "Route-specific notice check",
+          "Dynamic-market and other routes require route-specific confirmation against current guidance.",
+          "contextual"
+        ));
+      }
+
+      if (!userChoice) {
+        mandatory.push(notice(
+          "UK6 Contract Award Notice",
+          lightTouch
+            ? "Generally required before entering into a public contract. Light-touch contracts have no mandatory standstill."
+            : "Generally required before entering into a public contract."
+        ));
+      } else {
+        contextual.push(notice(
+          "UK6 user-choice exception",
+          "User-choice direct awards are a key exception to the general UK6 requirement.",
+          "contextual"
+        ));
+      }
+
+      if (!privateUtility && !userChoice) {
+        mandatory.push(notice(
+          "UK7 Contract Details Notice",
+          lightTouch
+            ? "Publish within 120 days after the contract is entered into."
+            : "Publish within 30 days after the contract is entered into."
+        ));
+      } else {
+        contextual.push(notice(
+          "UK7 exception check",
+          privateUtility
+            ? "Private utilities are a key exception to the standard UK7 requirement."
+            : "User-choice direct awards are a key exception to the standard UK7 requirement.",
+          "contextual"
+        ));
+      }
+
+      if (!privateUtility && route !== "framework" && route !== "dynamic") {
+        contextual.push(notice(
+          "UK12 Procurement Termination Notice",
+          "Required where a procurement is terminated after a Tender Notice or Transparency Notice without award. Private utilities are an exception.",
+          "contextual"
+        ));
+      }
+
+      if (state.answers.paymentsDate === "yes") {
+        contextual.push(notice(
+          "UK8 / section 70 contract payment information",
+          "From 1 April 2026, publish information quarterly about individual payments over £30,000 including VAT under in-scope public contracts whose procurement commenced on or after 1 April 2026, subject to exceptions.",
+          "contextual"
+        ));
+      }
+
+      if (!lightTouch && !concession) {
+        contextual.push(notice(
+          "UK9 Contract Performance Notice / KPI reporting",
+          "Section 71 is live from 1 January 2026. Where section 52 KPI requirements apply, reporting is at least annual and on termination; breach/poor-performance reporting has separate triggers.",
+          "contextual"
+        ));
+      } else {
+        contextual.push(notice(
+          "KPI-setting exemption",
+          "Concessions and light-touch contracts are exempt from the section 52 KPI-setting requirement.",
+          "contextual"
+        ));
+      }
+
+      if (!privateUtility && !lightTouch && !defence) {
+        contextual.push(notice(
+          "UK10 Contract Change Notice",
+          "Publish before qualifying modifications, subject to the statutory value/term tolerances and exemptions.",
+          "contextual"
+        ));
+      } else {
+        contextual.push(notice(
+          "UK10 exemption check",
+          "Defence/security, light-touch and private utility contracts are exempt from UK10.",
+          "contextual"
+        ));
+      }
+
+      if (!privateUtility && !userChoice) {
+        mandatory.push(notice(
+          "UK11 Contract Termination Notice",
+          "Required when a public contract ends, including successful completion; normally publish within 30 days."
+        ));
+      } else {
+        contextual.push(notice(
+          "UK11 exception check",
+          privateUtility
+            ? "Private utilities are a key exception to the standard UK11 requirement."
+            : "User-choice direct awards are a key exception to the standard UK11 requirement.",
+          "contextual"
+        ));
+      }
+
+      if (!privateUtility) {
+        if (state.answers.pipelineSpend === "yes") {
+          authority.push(notice(
+            "UK1 Pipeline Notice",
+            state.estimatedValue > 2000000 &&
+            (state.answers.route === "competitive" || state.answers.route === "direct") &&
+            state.answers.pipelineWindow === "yes"
+              ? "Authority-level £100m trigger is met and this procurement is over £2m with a planned UK4/UK5 in the 18-month reporting period. Consider this procurement for inclusion. Publish the authority pipeline within 56 days beginning with the first day of the financial year."
+              : "The authority-level £100m trigger is met. UK1 covers an 18-month reporting period and includes public contracts over £2m where UK4 or UK5 is intended during that period."
+          ));
+        } else if (state.answers.pipelineSpend === "unsure") {
+          authority.push(notice(
+            "UK1 Pipeline Notice — confirm authority-level trigger",
+            "Confirm whether the authority expects to pay more than £100m under relevant contracts in the coming financial year. The reporting period is 18 months and the notice deadline is within 56 days from the first day of the financial year.",
+            "authority"
+          ));
+        }
+
+        if (!concession) {
+          authority.push(notice(
+            "UK17 Payments Compliance Notice",
+            "Authority-level six-monthly reporting applies where payments were made or sums became payable under public contracts, subject to exceptions including concessions, private utilities and schools.",
+            "authority"
+          ));
+        }
+      }
+
+      return { mandatory, contextual, authority };
+    }
+
+    function answerLabel(key, value) {
+      const labels = {
+        authority: {
+          nhs: "NHS Trust / NHS Foundation Trust",
+          central: "Other central government authority",
+          subCentral: "Sub-central government authority",
+          privateUtility: "Private utility"
+        },
+        regime: {
+          ordinary: "Ordinary / other",
+          defence: "Defence & security",
+          utilities: "Utilities"
+        },
+        category: {
+          works: "Works",
+          concession: "Concession",
+          lightTouchConcession: "Light-touch concession",
+          lightTouch: "Light-touch services",
+          goodsServices: "Goods / services"
+        },
+        commencement: {
+          current: "On or after 1 January 2026",
+          pre2026: "Before 1 January 2026"
+        },
+        route: {
+          competitive: "Competitive tendering",
+          direct: "Direct award",
+          framework: "Framework call-off",
+          dynamic: "Dynamic market / other"
+        }
+      };
+
+      return labels[key]?.[value] || value || "—";
+    }
+
+    function renderNoticeGroup(title, items, className) {
+      if (!items.length) return "";
+
+      return `
+        <div class="notice-group">
+          <h4>${title}</h4>
+          <div class="notice-list">
+            ${items.map(item => `
+              <div class="notice-card ${className}">
+                <strong>${item.name}</strong>
+                <p>${item.description}</p>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTerminalResult() {
+      const reason = state.terminalReason;
+
+      if (reason === "psr") {
+        resultHeading.textContent = "PA23 pathway stopped";
+        return `
+          <div class="callout stop">
+            <strong>Provider Selection Regime applies.</strong><br>
+            The change report states that regulated health procurement under the PSR is not governed by PA23.
+            Use the PSR route and current PSR guidance instead of this threshold/notices pathway.
+          </div>
+        `;
+      }
+
+      if (reason === "exempt") {
+        resultHeading.textContent = "PA23 threshold pathway stopped";
+        return `
+          <div class="callout stop">
+            You identified the contract as exempt under PA23. Do not use the public-contract threshold and
+            notice pathway in this tool. Confirm the relevant exemption and applicable governance separately.
+          </div>
+        `;
+      }
+
+      if (reason === "authorityReview" || reason === "privateUtilityReview" || reason === "thresholdReview") {
+        resultHeading.textContent = "Classification review required";
+        return `
+          <div class="callout warning">
+            This assessment cannot safely determine a threshold from the information selected.
+            Confirm the authority classification and applicable Schedule 1 / utilities category before proceeding.
+          </div>
+        `;
+      }
+
+      return "";
+    }
+
+    function renderResult() {
+      if (state.terminalReason) {
+        resultBody.innerHTML = renderTerminalResult();
+        return;
+      }
+
+      const threshold = state.threshold;
+      const value = state.estimatedValue;
+      const period = state.answers.commencement === "pre2026"
+        ? "Pre-1 January 2026 transitional threshold"
+        : "2026–27 threshold";
+      const isNhs = state.answers.authority === "nhs";
+
+      const summary = `
+        <div class="summary-grid">
+          <div class="summary-item"><span>Authority</span><strong>${answerLabel("authority", state.answers.authority)}</strong></div>
+          <div class="summary-item"><span>Contract category</span><strong>${state.thresholdLabel}</strong></div>
+          <div class="summary-item"><span>Threshold period</span><strong>${period}</strong></div>
+          <div class="summary-item"><span>Estimated value incl. VAT</span><strong>${formatCurrency(value)}</strong></div>
+        </div>
+      `;
+
+      if (!state.isAboveThreshold) {
+        const nhsBelow = isNhs && value >= 12000;
+        resultHeading.textContent = "Below the applicable PA23 threshold";
+        resultBody.innerHTML = `
+          <div class="threshold-result">
+            <div class="label">Applicable threshold</div>
+            <div class="amount">${formatCurrency(threshold)}</div>
+            <p>Your estimated value of ${formatCurrency(value)} is below this threshold.</p>
+          </div>
+          ${summary}
+          <div class="callout info">
+            <strong>Below-threshold regime:</strong> the above-threshold public-contract notice pathway is not shown.
+            ${nhsBelow
+              ? `For NHS bodies, the change report also identifies a <strong>£12,000 notifiable below-threshold level</strong>; your value meets or exceeds that level.`
+              : isNhs
+                ? `For NHS bodies, the change report identifies a <strong>£12,000 notifiable below-threshold level</strong>; your value is below that level.`
+                : `Below-threshold contracts follow a different regime; confirm any authority-specific below-threshold requirements.`}
+          </div>
+        `;
+        return;
+      }
+
+      resultHeading.textContent = "Above-threshold PA23 assessment";
+      const notices = buildNoticeGroups();
+
+      resultBody.innerHTML = `
+        <div class="threshold-result">
+          <div class="label">Applicable threshold</div>
+          <div class="amount">${formatCurrency(threshold)}</div>
+          <p>Your estimated value of ${formatCurrency(value)} meets or exceeds this threshold.</p>
+        </div>
+
+        ${summary}
+
+        <div class="summary-grid">
+          <div class="summary-item"><span>Procurement route</span><strong>${answerLabel("route", state.answers.route)}</strong></div>
+          <div class="summary-item"><span>Guidance review date</span><strong>${REVIEW_DATE}</strong></div>
+        </div>
+
+        <div class="notice-section">
+          <h3>Potential PA23 notices — confirm route and triggers</h3>
+          <p>
+            These outputs use the route and lifecycle information entered above. Each notice still has its own
+            statutory trigger and exemptions, so confirm the current procedure-specific guidance before publication.
+          </p>
+          ${renderNoticeGroup("Likely / general requirements from the selected route", notices.mandatory, "mandatory")}
+          ${renderNoticeGroup("Conditional and lifecycle checks", notices.contextual, "contextual")}
+          ${renderNoticeGroup("Authority-level compliance reminders", notices.authority, "authority")}
+        </div>
+      `;
+    }
+
+    function render() {
+      updateProgress();
+
+      if (state.screen === "start") {
+        showScreen("start");
+        return;
+      }
+
+      if (state.screen === "question") {
+        showScreen("question");
+        renderQuestion();
+        return;
+      }
+
+      if (state.screen === "value") {
+        showScreen("value");
+        valueInput.value = state.estimatedValue ?? "";
+        window.setTimeout(() => valueInput.focus({ preventScroll: true }), 0);
+        return;
+      }
+
+      if (state.screen === "result") {
+        showScreen("result");
+        renderResult();
+      }
+    }
+
+    function startAssessment() {
+      state.screen = "question";
+      state.step = "psr";
+      state.answers = {};
+      state.thresholdKey = null;
+      state.threshold = null;
+      state.thresholdLabel = null;
+      state.estimatedValue = null;
+      state.isAboveThreshold = null;
+      state.terminalReason = null;
+      render();
+
+      // The first assessment page replaces this tool-page history entry.
+      // Browser Back from here therefore returns to the Tools selection page.
+      writeHistory("replace");
+    }
+
+    function restartAssessment() {
+      state.screen = "start";
+      state.step = null;
+      state.answers = {};
+      state.thresholdKey = null;
+      state.threshold = null;
+      state.thresholdLabel = null;
+      state.estimatedValue = null;
+      state.isAboveThreshold = null;
+      state.terminalReason = null;
+      history.replaceState(null, "", location.href);
+      render();
+    }
+
+    document.addEventListener("click", event => {
+      const toggle = event.target.closest("[data-help-toggle]");
+      if (!toggle) return;
+
+      const panel = document.getElementById(toggle.dataset.helpToggle);
+      if (!panel) return;
+
+      const willOpen = panel.hidden;
+      panel.hidden = !willOpen;
+      toggle.setAttribute("aria-expanded", String(willOpen));
+    });
+
+    document.querySelector("#start-button").addEventListener("click", startAssessment);
+    document.querySelector("#back-button").addEventListener("click", () => history.back());
+    document.querySelectorAll(".history-back").forEach(button => {
+      button.addEventListener("click", () => history.back());
+    });
+    document.querySelector("#value-continue").addEventListener("click", continueFromValue);
+    valueInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") continueFromValue();
+    });
+    document.querySelector("#restart-button").addEventListener("click", restartAssessment);
+
+    function escapePdfHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function printableNoticeCards(items, className) {
+      if (!items || !items.length) return "";
+
+      return items.map(item => `
+        <article class="pdf-notice ${className}">
+          <h4>${escapePdfHtml(item.name)}</h4>
+          <p>${escapePdfHtml(item.description)}</p>
+        </article>
+      `).join("");
+    }
+
+    function printableAnswerRows() {
+      const rows = [];
+
+      if (state.answers.authority) {
+        rows.push(["Authority", answerLabel("authority", state.answers.authority)]);
+      }
+      if (state.thresholdLabel) {
+        rows.push(["Contract category", state.thresholdLabel]);
+      }
+      if (state.answers.commencement) {
+        rows.push(["Procurement commenced", answerLabel("commencement", state.answers.commencement)]);
+      }
+      if (state.estimatedValue !== null) {
+        rows.push(["Estimated value incl. VAT", formatCurrency(state.estimatedValue)]);
+      }
+      if (state.answers.route) {
+        rows.push(["Procurement route", answerLabel("route", state.answers.route)]);
+      }
+      if (state.answers.userChoice) {
+        rows.push(["User-choice direct award", state.answers.userChoice === "yes" ? "Yes" : "No"]);
+      }
+      if (state.answers.marketEngagement) {
+        rows.push(["Preliminary market engagement", state.answers.marketEngagement === "yes" ? "Yes" : "No"]);
+      }
+      if (state.answers.plannedNotice) {
+        rows.push(["Planned Procurement Notice (UK3)", state.answers.plannedNotice === "yes" ? "Yes" : "No"]);
+      }
+      if (state.answers.pipelineSpend) {
+        const pipelineLabel = state.answers.pipelineSpend === "yes" ? "Yes" :
+          state.answers.pipelineSpend === "no" ? "No" : "Unsure";
+        rows.push(["Authority expects >£100m relevant payments", pipelineLabel]);
+      }
+      if (state.answers.pipelineWindow) {
+        const pipelineWindowLabel = state.answers.pipelineWindow === "yes" ? "Yes" :
+          state.answers.pipelineWindow === "no" ? "No" : "Unsure";
+        rows.push(["UK4/UK5 in relevant 18-month pipeline period", pipelineWindowLabel]);
+      }
+      if (state.answers.paymentsDate) {
+        const paymentsDateLabel = state.answers.paymentsDate === "yes" ? "Yes" :
+          state.answers.paymentsDate === "no" ? "No" : "Unsure";
+        rows.push(["Procurement commenced on/after 1 April 2026", paymentsDateLabel]);
+      }
+
+      return rows.map(([label, value]) => `
+        <div class="pdf-summary-row">
+          <span>${escapePdfHtml(label)}</span>
+          <strong>${escapePdfHtml(value)}</strong>
+        </div>
+      `).join("");
+    }
+
+    function buildPrintableReport() {
+      let resultTitle = "PA23 Assessment Summary";
+      let resultSummary = "";
+      let noticesHtml = "";
+
+      if (state.terminalReason) {
+        if (state.terminalReason === "psr") {
+          resultTitle = "PA23 Pathway Stopped";
+          resultSummary = `
+            <div class="pdf-status stop">
+              <strong>Provider Selection Regime applies.</strong>
+              <p>Regulated health procurement under the PSR is outside the PA23 pathway. Use the current PSR route and guidance instead.</p>
+            </div>
+          `;
+        } else if (state.terminalReason === "exempt") {
+          resultTitle = "PA23 Threshold Pathway Stopped";
+          resultSummary = `
+            <div class="pdf-status stop">
+              <strong>Contract identified as exempt.</strong>
+              <p>Do not use the public-contract threshold and notice pathway in this tool. Confirm the applicable exemption and governance separately.</p>
+            </div>
+          `;
+        } else {
+          resultTitle = "Classification Review Required";
+          resultSummary = `
+            <div class="pdf-status warning">
+              <strong>Further review is required.</strong>
+              <p>The assessment could not safely determine a threshold from the information selected. Confirm the authority and contract classification before proceeding.</p>
+            </div>
+          `;
+        }
+      } else if (state.threshold !== null && state.estimatedValue !== null) {
+        const thresholdStatus = state.isAboveThreshold ? "Meets / exceeds threshold" : "Below threshold";
+        resultSummary = `
+          <section class="pdf-threshold">
+            <div>
+              <span>Applicable threshold</span>
+              <strong>${escapePdfHtml(formatCurrency(state.threshold))}</strong>
+            </div>
+            <div>
+              <span>Estimated value incl. VAT</span>
+              <strong>${escapePdfHtml(formatCurrency(state.estimatedValue))}</strong>
+            </div>
+            <p>${escapePdfHtml(thresholdStatus)}</p>
+          </section>
+        `;
+
+        if (state.isAboveThreshold) {
+          const groups = buildNoticeGroups();
+          noticesHtml = `
+            <section class="pdf-section">
+              <h3>Potential PA23 notices — confirm route and triggers</h3>
+              <p class="pdf-section-intro">These outputs reflect the answers entered in the assessment. Each notice has its own statutory trigger and exemptions, so confirm current procedure-specific guidance before publication.</p>
+
+              ${groups.mandatory.length ? `
+                <div class="pdf-notice-group">
+                  <h4>Likely / general requirements from the selected route</h4>
+                  ${printableNoticeCards(groups.mandatory, "mandatory")}
+                </div>
+              ` : ""}
+
+              ${groups.contextual.length ? `
+                <div class="pdf-notice-group">
+                  <h4>Conditional and lifecycle checks</h4>
+                  ${printableNoticeCards(groups.contextual, "contextual")}
+                </div>
+              ` : ""}
+
+              ${groups.authority.length ? `
+                <div class="pdf-notice-group">
+                  <h4>Authority-level compliance reminders</h4>
+                  ${printableNoticeCards(groups.authority, "authority")}
+                </div>
+              ` : ""}
+            </section>
+          `;
+        } else {
+          const nhsBelow = state.answers.authority === "nhs" && state.estimatedValue >= 12000;
+          noticesHtml = `
+            <section class="pdf-status info">
+              <strong>Below-threshold regime</strong>
+              <p>The above-threshold public-contract notice pathway is not shown.</p>
+              ${state.answers.authority === "nhs"
+                ? `<p>${nhsBelow
+                    ? "For NHS bodies, the assessment value meets or exceeds the £12,000 notifiable below-threshold level identified in the change report."
+                    : "For NHS bodies, the assessment value is below the £12,000 notifiable below-threshold level identified in the change report."
+                  }</p>`
+                : ""}
+            </section>
+          `;
+        }
+      }
+
+      return `
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PA23 Assessment Summary</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 17mm 16mm 18mm;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      color: #102a43;
+      background: #fff;
+      font-family: Arial, "Segoe UI", sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.45;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      max-width: 178mm;
+      margin: 0 auto;
+    }
+
+    .pdf-header {
+      display: table;
+      width: 100%;
+      margin: 0 0 8mm;
+      padding: 0 0 5mm;
+      border-bottom: 2px solid #005eb8;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .pdf-header-copy,
+    .pdf-header-mark {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    .pdf-header-copy h1 {
+      margin: 0 0 1.5mm;
+      color: #072b61;
+      font-size: 20pt;
+      line-height: 1.1;
+    }
+
+    .pdf-header-copy p {
+      margin: 0;
+      color: #5b7087;
+      font-size: 9.5pt;
+    }
+
+    .pdf-header-mark {
+      width: 42mm;
+      text-align: right;
+      color: #005eb8;
+      font-size: 20pt;
+      font-weight: 800;
+      font-style: italic;
+    }
+
+    .pdf-controlled {
+      margin: 0 0 6mm;
+      padding: 3.5mm 4mm;
+      border: 1px solid #b8d9df;
+      border-left: 4px solid #008a96;
+      border-radius: 2mm;
+      background: #f1fafb;
+      color: #003d78;
+      font-size: 8.5pt;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    h2, h3, h4, p { orphans: 3; widows: 3; }
+
+    .pdf-result-title {
+      margin: 0 0 4mm;
+      color: #072b61;
+      font-size: 16pt;
+      line-height: 1.2;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    .pdf-threshold {
+      margin: 0 0 6mm;
+      padding: 5mm;
+      border: 1px solid #a8d1aa;
+      border-radius: 2.5mm;
+      background: #edf8ef;
+      text-align: center;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .pdf-threshold > div {
+      display: inline-block;
+      width: 48%;
+      vertical-align: top;
+    }
+
+    .pdf-threshold span {
+      display: block;
+      color: #4c7550;
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .pdf-threshold strong {
+      display: block;
+      margin-top: 1.5mm;
+      color: #2f7d32;
+      font-size: 17pt;
+    }
+
+    .pdf-threshold p {
+      margin: 3mm 0 0;
+      color: #49734d;
+      font-weight: 700;
+    }
+
+    .pdf-section {
+      margin-top: 6mm;
+    }
+
+    .pdf-section > h3 {
+      margin: 0 0 2mm;
+      color: #072b61;
+      font-size: 13.5pt;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    .pdf-section-intro {
+      margin: 0 0 4mm;
+      color: #5b7087;
+      font-size: 9pt;
+    }
+
+    .pdf-summary {
+      margin: 0 0 6mm;
+    }
+
+    .pdf-summary h3 {
+      margin: 0 0 2.5mm;
+      color: #072b61;
+      font-size: 12pt;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    .pdf-summary-row {
+      display: table;
+      width: 100%;
+      margin: 0 0 1.5mm;
+      padding: 2.6mm 3mm;
+      border: 1px solid #d7e4ee;
+      border-radius: 1.5mm;
+      background: #f7fafc;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .pdf-summary-row span,
+    .pdf-summary-row strong {
+      display: table-cell;
+      vertical-align: top;
+    }
+
+    .pdf-summary-row span {
+      width: 43%;
+      padding-right: 4mm;
+      color: #5b7087;
+      font-size: 8.5pt;
+      font-weight: 700;
+    }
+
+    .pdf-summary-row strong {
+      color: #072b61;
+      font-size: 9pt;
+      text-align: right;
+    }
+
+    .pdf-notice-group {
+      margin-top: 5mm;
+    }
+
+    .pdf-notice-group > h4 {
+      margin: 0 0 2.5mm;
+      color: #003d78;
+      font-size: 10.5pt;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    .pdf-notice {
+      margin: 0 0 2.7mm;
+      padding: 3.4mm 4mm;
+      border: 1px solid #dce7ef;
+      border-left-width: 4px;
+      border-radius: 1.5mm;
+      background: #fff;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .pdf-notice.mandatory { border-left-color: #005eb8; }
+    .pdf-notice.contextual { border-left-color: #008a96; }
+    .pdf-notice.authority { border-left-color: #8c6e1d; }
+
+    .pdf-notice h4 {
+      margin: 0 0 1mm;
+      color: #072b61;
+      font-size: 9.5pt;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    .pdf-notice p {
+      margin: 0;
+      color: #5b7087;
+      font-size: 8.7pt;
+      line-height: 1.45;
+    }
+
+    .pdf-status {
+      margin: 0 0 6mm;
+      padding: 4mm;
+      border: 1px solid #d7e4ee;
+      border-left: 4px solid #005eb8;
+      border-radius: 2mm;
+      background: #f7fafc;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .pdf-status.stop {
+      border-color: #dfb7b7;
+      border-left-color: #b64c4c;
+      background: #fff3f3;
+      color: #8b3a3a;
+    }
+
+    .pdf-status.warning {
+      border-color: #e8d38f;
+      border-left-color: #c19017;
+      background: #fff8df;
+      color: #7a5a12;
+    }
+
+    .pdf-status.info {
+      border-color: #b8d9df;
+      border-left-color: #008a96;
+      background: #f1fafb;
+      color: #003d78;
+    }
+
+    .pdf-status p {
+      margin: 1.5mm 0 0;
+    }
+
+    .pdf-footer-note {
+      margin-top: 8mm;
+      padding-top: 3mm;
+      border-top: 1px solid #d7e4ee;
+      color: #718397;
+      font-size: 8pt;
+      text-align: center;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    @media print {
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="pdf-header">
+    <div class="pdf-header-copy">
+      <h1>Thresholds &amp; Notices (PA23)</h1>
+      <p>One Dorset Procurement Service · Procurement Resources</p>
+    </div>
+    <div class="pdf-header-mark">NHS</div>
+  </header>
+
+  <div class="pdf-controlled">
+    <strong>Controlled assessment summary.</strong>
+    Thresholds current for 1 January 2026–31 December 2027; guidance reviewed ${escapePdfHtml(REVIEW_DATE)}.
+    This is decision support, not legal advice.
+  </div>
+
+  <h2 class="pdf-result-title">${escapePdfHtml(resultTitle)}</h2>
+
+  ${resultSummary}
+
+  ${printableAnswerRows() ? `
+    <section class="pdf-summary">
+      <h3>Assessment details</h3>
+      ${printableAnswerRows()}
+    </section>
+  ` : ""}
+
+  ${noticesHtml}
+
+  <div class="pdf-footer-note">
+    Controlled Environment | One Dorset Procurement Service (ODPS)
+  </div>
+</body>
+</html>
+      `;
+    }
+
+    function pdfLiteral(value) {
+      const source = String(value ?? "")
+        .replaceAll("–", "-")
+        .replaceAll("—", "-")
+        .replaceAll("’", "'")
+        .replaceAll("‘", "'")
+        .replaceAll("“", '"')
+        .replaceAll("”", '"')
+        .replaceAll("•", "-")
+        .replaceAll("…", "...");
+
+      let out = "";
+      for (const char of source) {
+        if (char === "\\") out += "\\\\";
+        else if (char === "(") out += "\\(";
+        else if (char === ")") out += "\\)";
+        else if (char === "£") out += "\\243";
+        else if (char.charCodeAt(0) >= 32 && char.charCodeAt(0) <= 126) out += char;
+        else if (char === "\n" || char === "\r" || char === "\t") out += " ";
+        else out += "?";
+      }
+      return out;
+    }
+
+    function buildDirectPdf() {
+      const PAGE_W = 595.28;
+      const PAGE_H = 841.89;
+      const LEFT = 46;
+      const RIGHT = 46;
+      const TOP = 58;
+      const BOTTOM = 46;
+      const CONTENT_W = PAGE_W - LEFT - RIGHT;
+
+      const pages = [];
+      let ops = [];
+      let y = PAGE_H - TOP;
+
+      const rgb = {
+        navy: [0.027, 0.169, 0.38],
+        blue: [0, 0.369, 0.722],
+        deepBlue: [0, 0.239, 0.471],
+        teal: [0, 0.541, 0.588],
+        ink: [0.063, 0.165, 0.263],
+        muted: [0.357, 0.439, 0.529],
+        line: [0.843, 0.894, 0.933],
+        soft: [0.969, 0.98, 0.988],
+        green: [0.184, 0.49, 0.196],
+        greenSoft: [0.929, 0.973, 0.937],
+        warning: [0.761, 0.565, 0.09],
+        warningSoft: [1, 0.973, 0.875],
+        stop: [0.714, 0.298, 0.298],
+        stopSoft: [1, 0.953, 0.953],
+        white: [1, 1, 1]
+      };
+
+      function color(c) {
+        return `${c[0]} ${c[1]} ${c[2]}`;
+      }
+
+      function rect(x, yy, w, h, fill, stroke = null, lineWidth = 1) {
+        ops.push("q");
+        if (fill) ops.push(`${color(fill)} rg`);
+        if (stroke) {
+          ops.push(`${color(stroke)} RG`);
+          ops.push(`${lineWidth} w`);
+        }
+        ops.push(`${x.toFixed(2)} ${yy.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re`);
+        ops.push(fill && stroke ? "B" : fill ? "f" : "S");
+        ops.push("Q");
+      }
+
+      function line(x1, y1, x2, y2, stroke, lineWidth = 1) {
+        ops.push(`q ${color(stroke)} RG ${lineWidth} w ${x1.toFixed(2)} ${y1.toFixed(2)} m ${x2.toFixed(2)} ${y2.toFixed(2)} l S Q`);
+      }
+
+      function text(txt, x, yy, size = 10, font = "F1", fill = rgb.ink) {
+        ops.push(
+          `BT /${font} ${size} Tf ${color(fill)} rg 1 0 0 1 ${x.toFixed(2)} ${yy.toFixed(2)} Tm (${pdfLiteral(txt)}) Tj ET`
+        );
+      }
+
+      function wrap(txt, maxWidth, size = 10, bold = false) {
+        const words = String(txt ?? "").replace(/\s+/g, " ").trim().split(" ").filter(Boolean);
+        if (!words.length) return [];
+        const avg = size * (bold ? 0.55 : 0.50);
+        const maxChars = Math.max(12, Math.floor(maxWidth / avg));
+        const lines = [];
+        let current = "";
+
+        words.forEach(word => {
+          if (!current) {
+            current = word;
+          } else if ((current + " " + word).length <= maxChars) {
+            current += " " + word;
+          } else {
+            lines.push(current);
+            current = word;
+          }
+        });
+
+        if (current) lines.push(current);
+        return lines;
+      }
+
+      function wrappedText(txt, x, yy, maxWidth, size = 10, font = "F1", fill = rgb.ink, leading = 1.35) {
+        const lines = wrap(txt, maxWidth, size, font === "F2");
+        let currentY = yy;
+        lines.forEach(item => {
+          text(item, x, currentY, size, font, fill);
+          currentY -= size * leading;
+        });
+        return currentY;
+      }
+
+      function pageHeader() {
+        text("Thresholds & Notices (PA23)", LEFT, PAGE_H - 34, 15, "F2", rgb.navy);
+        text("One Dorset Procurement Service | Procurement Resources", LEFT, PAGE_H - 49, 8.5, "F1", rgb.muted);
+
+        rect(PAGE_W - RIGHT - 56, PAGE_H - 50, 56, 25, rgb.blue);
+        text("NHS", PAGE_W - RIGHT - 45, PAGE_H - 43, 17, "F2", rgb.white);
+
+        line(LEFT, PAGE_H - 58, PAGE_W - RIGHT, PAGE_H - 58, rgb.blue, 1.5);
+        y = PAGE_H - 78;
+      }
+
+      function pageFooter(pageNo) {
+        line(LEFT, 35, PAGE_W - RIGHT, 35, rgb.line, 0.7);
+        text("Controlled Environment | One Dorset Procurement Service (ODPS)", LEFT, 22, 7.5, "F1", rgb.muted);
+        text(`Page ${pageNo}`, PAGE_W - RIGHT - 32, 22, 7.5, "F1", rgb.muted);
+      }
+
+      function finishPage() {
+        pageFooter(pages.length + 1);
+        pages.push(ops.join("\n"));
+        ops = [];
+        pageHeader();
+      }
+
+      function ensureSpace(height) {
+        if (y - height < BOTTOM + 20) finishPage();
+      }
+
+      function heading(txt, size = 15) {
+        const lines = wrap(txt, CONTENT_W, size, true);
+        const height = lines.length * size * 1.25 + 8;
+        ensureSpace(height);
+        lines.forEach(item => {
+          text(item, LEFT, y, size, "F2", rgb.navy);
+          y -= size * 1.25;
+        });
+        y -= 6;
+      }
+
+      function controlledNote() {
+        const note = `Controlled assessment summary. Thresholds current for 1 January 2026-31 December 2027; guidance reviewed ${REVIEW_DATE}. This is decision support, not legal advice.`;
+        const lines = wrap(note, CONTENT_W - 24, 8.5);
+        const height = lines.length * 11.5 + 18;
+        ensureSpace(height);
+        rect(LEFT, y - height + 6, CONTENT_W, height, [0.941, 0.98, 0.984], [0.722, 0.851, 0.875], 0.8);
+        line(LEFT, y + 6, LEFT, y - height + 6, rgb.teal, 3);
+        let ty = y - 9;
+        lines.forEach(item => {
+          text(item, LEFT + 12, ty, 8.5, "F1", rgb.deepBlue);
+          ty -= 11.5;
+        });
+        y -= height + 9;
+      }
+
+      function statusBox(title, paragraphs, mode = "info") {
+        const palette = mode === "stop"
+          ? { fill: rgb.stopSoft, stroke: rgb.stop }
+          : mode === "warning"
+            ? { fill: rgb.warningSoft, stroke: rgb.warning }
+            : { fill: [0.945, 0.98, 0.984], stroke: rgb.teal };
+
+        const titleLines = wrap(title, CONTENT_W - 26, 10, true);
+        const bodyLines = [];
+        paragraphs.forEach(p => {
+          bodyLines.push(...wrap(p, CONTENT_W - 26, 8.7));
+          bodyLines.push("");
+        });
+        if (bodyLines.at(-1) === "") bodyLines.pop();
+
+        const height = 15 + titleLines.length * 13 + bodyLines.length * 11.5 + 11;
+        ensureSpace(height);
+        rect(LEFT, y - height + 5, CONTENT_W, height, palette.fill, [0.85, 0.85, 0.85], 0.7);
+        line(LEFT, y + 5, LEFT, y - height + 5, palette.stroke, 3);
+
+        let ty = y - 9;
+        titleLines.forEach(item => {
+          text(item, LEFT + 12, ty, 10, "F2", rgb.navy);
+          ty -= 13;
+        });
+
+        ty -= 2;
+        bodyLines.forEach(item => {
+          if (!item) {
+            ty -= 4;
+          } else {
+            text(item, LEFT + 12, ty, 8.7, "F1", rgb.ink);
+            ty -= 11.5;
+          }
+        });
+
+        y -= height + 9;
+      }
+
+      function thresholdBox() {
+        const threshold = formatCurrency(state.threshold);
+        const estimated = formatCurrency(state.estimatedValue);
+        const status = state.isAboveThreshold ? "Meets / exceeds threshold" : "Below threshold";
+
+        const height = 82;
+        ensureSpace(height);
+        rect(LEFT, y - height + 4, CONTENT_W, height, rgb.greenSoft, [0.659, 0.82, 0.667], 0.8);
+
+        text("APPLICABLE THRESHOLD", LEFT + 18, y - 15, 7.5, "F2", [0.298, 0.459, 0.314]);
+        text(threshold, LEFT + 18, y - 35, 17, "F2", rgb.green);
+
+        text("ESTIMATED VALUE INCL. VAT", LEFT + CONTENT_W / 2 + 4, y - 15, 7.5, "F2", [0.298, 0.459, 0.314]);
+        text(estimated, LEFT + CONTENT_W / 2 + 4, y - 35, 17, "F2", rgb.green);
+
+        text(status, LEFT + 18, y - 59, 9, "F2", [0.286, 0.451, 0.302]);
+        y -= height + 10;
+      }
+
+      function assessmentRows() {
+        const rows = [];
+
+        if (state.answers.authority) rows.push(["Authority", answerLabel("authority", state.answers.authority)]);
+        if (state.thresholdLabel) rows.push(["Contract category", state.thresholdLabel]);
+        if (state.answers.commencement) rows.push(["Procurement commenced", answerLabel("commencement", state.answers.commencement)]);
+        if (state.estimatedValue !== null) rows.push(["Estimated value incl. VAT", formatCurrency(state.estimatedValue)]);
+        if (state.answers.route) rows.push(["Procurement route", answerLabel("route", state.answers.route)]);
+        if (state.answers.userChoice) rows.push(["User-choice direct award", state.answers.userChoice === "yes" ? "Yes" : "No"]);
+        if (state.answers.marketEngagement) rows.push(["Preliminary market engagement", state.answers.marketEngagement === "yes" ? "Yes" : "No"]);
+        if (state.answers.plannedNotice) rows.push(["Planned Procurement Notice (UK3)", state.answers.plannedNotice === "yes" ? "Yes" : "No"]);
+        if (state.answers.pipelineSpend) {
+          const v = state.answers.pipelineSpend === "yes" ? "Yes" : state.answers.pipelineSpend === "no" ? "No" : "Unsure";
+          rows.push(["Authority expects >GBP 100m relevant payments", v]);
+        }
+        if (state.answers.pipelineWindow) {
+          const v = state.answers.pipelineWindow === "yes" ? "Yes" : state.answers.pipelineWindow === "no" ? "No" : "Unsure";
+          rows.push(["UK4/UK5 in relevant 18-month pipeline period", v]);
+        }
+        if (state.answers.paymentsDate) {
+          const v = state.answers.paymentsDate === "yes" ? "Yes" : state.answers.paymentsDate === "no" ? "No" : "Unsure";
+          rows.push(["Procurement commenced on/after 1 April 2026", v]);
+        }
+
+        if (!rows.length) return;
+
+        heading("Assessment details", 12);
+
+        rows.forEach(([label, value]) => {
+          const labelLines = wrap(label, 190, 8.2, true);
+          const valueLines = wrap(value, 270, 8.5, true);
+          const lineCount = Math.max(labelLines.length, valueLines.length);
+          const rowH = Math.max(26, lineCount * 11 + 12);
+
+          ensureSpace(rowH + 4);
+          rect(LEFT, y - rowH + 4, CONTENT_W, rowH, rgb.soft, rgb.line, 0.6);
+
+          let ly = y - 11;
+          labelLines.forEach(item => {
+            text(item, LEFT + 10, ly, 8.2, "F2", rgb.muted);
+            ly -= 11;
+          });
+
+          let vy = y - 11;
+          valueLines.forEach(item => {
+            text(item, LEFT + 210, vy, 8.5, "F2", rgb.navy);
+            vy -= 11;
+          });
+
+          y -= rowH + 5;
+        });
+
+        y -= 3;
+      }
+
+      function noticeCard(item, accent) {
+        const titleLines = wrap(item.name, CONTENT_W - 28, 9.2, true);
+        const bodyLines = wrap(item.description, CONTENT_W - 28, 8.4);
+        const height = 13 + titleLines.length * 12 + bodyLines.length * 10.8 + 10;
+
+        ensureSpace(height + 5);
+        rect(LEFT, y - height + 4, CONTENT_W, height, rgb.white, rgb.line, 0.7);
+        line(LEFT, y + 4, LEFT, y - height + 4, accent, 3);
+
+        let ty = y - 10;
+        titleLines.forEach(itemLine => {
+          text(itemLine, LEFT + 12, ty, 9.2, "F2", rgb.navy);
+          ty -= 12;
+        });
+
+        ty -= 2;
+        bodyLines.forEach(itemLine => {
+          text(itemLine, LEFT + 12, ty, 8.4, "F1", rgb.muted);
+          ty -= 10.8;
+        });
+
+        y -= height + 6;
+      }
+
+      function noticeGroup(title, items, accent) {
+        if (!items?.length) return;
+
+        const headingLines = wrap(title, CONTENT_W, 10, true);
+        const headingHeight = headingLines.length * 12 + 8;
+        ensureSpace(headingHeight + 45);
+
+        headingLines.forEach(item => {
+          text(item, LEFT, y, 10, "F2", rgb.deepBlue);
+          y -= 12;
+        });
+        y -= 5;
+
+        items.forEach(item => noticeCard(item, accent));
+        y -= 4;
+      }
+
+      function notices() {
+        const groups = buildNoticeGroups();
+
+        heading("Potential PA23 notices - confirm route and triggers", 13);
+        const intro = "These outputs reflect the answers entered in the assessment. Each notice has its own statutory trigger and exemptions, so confirm current procedure-specific guidance before publication.";
+        const introLines = wrap(intro, CONTENT_W, 8.6);
+        ensureSpace(introLines.length * 11 + 8);
+        introLines.forEach(item => {
+          text(item, LEFT, y, 8.6, "F1", rgb.muted);
+          y -= 11;
+        });
+        y -= 8;
+
+        noticeGroup("Likely / general requirements from the selected route", groups.mandatory, rgb.blue);
+        noticeGroup("Conditional and lifecycle checks", groups.contextual, rgb.teal);
+        noticeGroup("Authority-level compliance reminders", groups.authority, [0.55, 0.43, 0.114]);
+      }
+
+      pageHeader();
+      controlledNote();
+
+      let title = "PA23 Assessment Summary";
+      if (state.terminalReason === "psr") title = "PA23 Pathway Stopped";
+      else if (state.terminalReason === "exempt") title = "PA23 Threshold Pathway Stopped";
+      else if (state.terminalReason) title = "Classification Review Required";
+      else if (state.isAboveThreshold === false) title = "Below the Applicable PA23 Threshold";
+      else if (state.isAboveThreshold === true) title = "Above-Threshold PA23 Assessment";
+
+      heading(title, 16);
+
+      if (state.terminalReason === "psr") {
+        statusBox(
+          "Provider Selection Regime applies.",
+          ["Regulated health procurement under the PSR is outside the PA23 pathway. Use the current PSR route and guidance instead."],
+          "stop"
+        );
+      } else if (state.terminalReason === "exempt") {
+        statusBox(
+          "Contract identified as exempt.",
+          ["Do not use the public-contract threshold and notice pathway in this tool. Confirm the applicable exemption and governance separately."],
+          "stop"
+        );
+      } else if (state.terminalReason) {
+        statusBox(
+          "Further review is required.",
+          ["The assessment could not safely determine a threshold from the information selected. Confirm the authority and contract classification before proceeding."],
+          "warning"
+        );
+      } else if (state.threshold !== null && state.estimatedValue !== null) {
+        thresholdBox();
+        assessmentRows();
+
+        if (state.isAboveThreshold) {
+          notices();
+        } else {
+          const paragraphs = ["The above-threshold public-contract notice pathway is not shown."];
+          if (state.answers.authority === "nhs") {
+            paragraphs.push(
+              state.estimatedValue >= 12000
+                ? "For NHS bodies, this value meets or exceeds the GBP 12,000 notifiable below-threshold level identified in the change report."
+                : "For NHS bodies, this value is below the GBP 12,000 notifiable below-threshold level identified in the change report."
+            );
+          }
+          statusBox("Below-threshold regime", paragraphs, "info");
+        }
+      }
+
+      pageFooter(pages.length + 1);
+      pages.push(ops.join("\n"));
+
+      const objects = [];
+      objects[1] = "<< /Type /Catalog /Pages 2 0 R >>";
+      objects[3] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>";
+      objects[4] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>";
+
+      const pageRefs = [];
+      pages.forEach((stream, index) => {
+        const pageObj = 5 + index * 2;
+        const streamObj = 6 + index * 2;
+        pageRefs.push(`${pageObj} 0 R`);
+        objects[pageObj] =
+          `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PAGE_W} ${PAGE_H}] ` +
+          `/Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${streamObj} 0 R >>`;
+        objects[streamObj] = `<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`;
+      });
+
+      objects[2] = `<< /Type /Pages /Count ${pages.length} /Kids [${pageRefs.join(" ")}] >>`;
+
+      let pdf = "%PDF-1.4\n%\xE2\xE3\xCF\xD3\n";
+      const offsets = [0];
+
+      for (let i = 1; i < objects.length; i++) {
+        offsets[i] = pdf.length;
+        pdf += `${i} 0 obj\n${objects[i]}\nendobj\n`;
+      }
+
+      const xrefOffset = pdf.length;
+      pdf += `xref\n0 ${objects.length}\n`;
+      pdf += "0000000000 65535 f \n";
+
+      for (let i = 1; i < objects.length; i++) {
+        pdf += `${String(offsets[i]).padStart(10, "0")} 00000 n \n`;
+      }
+
+      pdf += `trailer\n<< /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+
+      return pdf;
+    }
+
+    function downloadSummaryPdf() {
+      const pdf = buildDirectPdf();
+      const bytes = new Uint8Array(pdf.length);
+
+      for (let i = 0; i < pdf.length; i++) {
+        bytes[i] = pdf.charCodeAt(i) & 0xff;
+      }
+
+      const blob = new Blob([bytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = "PA23-Assessment-Summary.pdf";
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+    }
+
+    document.querySelector("#download-button").addEventListener("click", downloadSummaryPdf);
+
+    window.addEventListener("popstate", event => {
+      // Same-page Back/Forward restores the exact assessment step.
+      // Back from the first question navigates normally to ../tools.html.
+      restoreFromHistory(event.state);
+    });
+
+    if (history.state && history.state.marker === HISTORY_MARKER) {
+      restoreFromHistory(history.state);
+    } else {
+      history.replaceState(null, "", location.href);
+      render();
+    }
+  </script>
+</body>
+</html>

@@ -473,57 +473,149 @@ function renderLibrary() {
 
   guides.forEach((guide) => {
     const card = document.createElement("article");
-    card.className = "guide-card";
+    card.className = "guide-card is-collapsed";
+    card.dataset.guideCard = guide.id;
+
     card.innerHTML = `
-      <div class="guide-card-content">
-        <div class="guide-kicker">${guide.kicker}</div>
-        <h3>${guide.title}</h3>
-        <p>${guide.description}</p>
-        <div class="guide-card-meta">
-          <span>${guide.pages.length} ${guide.pageLabel === "Page" ? "pages" : "steps"}</span>
-          <span>•</span>
-          <span>${guide.duration}</span>
-        </div>
-        <div class="guide-card-actions">
-          <button class="primary-button open-guide" type="button" data-guide="${guide.id}">
-            Open guide
-            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          ${guide.download ? `
-            <a class="secondary-button guide-download-button" href="${guide.download.url}" download="${guide.download.filename}">
-              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m0 0 3.5-3.5M10 12 6.5 8.5M4 16h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              ${guide.download.label || "Download PDF"}
-            </a>` : ""}
-        </div>
-      </div>
-      <div class="guide-cover" aria-hidden="true">
-        <div class="cover-badge">NHS</div>
-        <div class="cover-book">
-          <div class="cover-book-lines">
-            <strong>${guide.coverTitle}</strong>
-            <i></i><i></i><i></i>
+      <button
+        class="guide-card-summary"
+        type="button"
+        aria-expanded="false"
+        aria-controls="guide-details-${guide.id}"
+      >
+        <span class="guide-card-summary-title">${guide.title}</span>
+        <svg class="guide-card-summary-chevron" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="m6 8 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="guide-card-expanded" id="guide-details-${guide.id}">
+        <div class="guide-card-content">
+          <div class="guide-kicker">${guide.kicker}</div>
+          <h3>${guide.title}</h3>
+          <p>${guide.description}</p>
+          <div class="guide-card-meta">
+            <span>${guide.pages.length} ${guide.pageLabel === "Page" ? "pages" : "steps"}</span>
+            <span>•</span>
+            <span>${guide.duration}</span>
+          </div>
+          <div class="guide-card-actions">
+            <button class="primary-button open-guide" type="button" data-guide="${guide.id}">
+              Open guide
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            ${guide.download ? `
+              <a class="secondary-button guide-download-button" href="${guide.download.url}" download="${guide.download.filename}">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m0 0 3.5-3.5M10 12 6.5 8.5M4 16h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                ${guide.download.label || "Download PDF"}
+              </a>` : ""}
           </div>
         </div>
+
+        <div class="guide-cover" aria-hidden="true">
+          <div class="cover-badge">NHS</div>
+          <div class="cover-book">
+            <div class="cover-book-lines">
+              <strong>${guide.coverTitle}</strong>
+              <i></i><i></i><i></i>
+            </div>
+          </div>
+        </div>
+
+        <button class="guide-card-collapse" type="button" aria-label="Collapse ${guide.title}" title="Collapse">
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="m6 12 4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
     `;
+
     grid.appendChild(card);
   });
 
   const soon = document.createElement("aside");
   soon.className = "coming-soon";
   soon.innerHTML = `
-    <div>
-      <div class="coming-soon-icon" aria-hidden="true">+</div>
+    <div class="coming-soon-compact">
+      <span class="coming-soon-icon" aria-hidden="true">+</span>
       <h3>More guides coming soon</h3>
-      <p>Add future ODPS guides to the same library and they will use the same familiar reader.</p>
     </div>
   `;
   grid.appendChild(soon);
+
+  function collapseCard(card) {
+    if (!card) return;
+    card.classList.remove("is-expanded");
+    card.classList.add("is-collapsed");
+    const summary = card.querySelector(".guide-card-summary");
+    summary?.setAttribute("aria-expanded", "false");
+  }
+
+  function expandCard(card) {
+    if (!card) return;
+
+    // Keep the library tidy by expanding one guide at a time.
+    document.querySelectorAll(".guide-card.is-expanded").forEach((openCard) => {
+      if (openCard !== card) collapseCard(openCard);
+    });
+
+    card.classList.remove("is-collapsed");
+    card.classList.add("is-expanded");
+    const summary = card.querySelector(".guide-card-summary");
+    summary?.setAttribute("aria-expanded", "true");
+  }
+
+  document.querySelectorAll(".guide-card").forEach((card) => {
+    card.addEventListener("click", (event) => {
+      const interactive = event.target.closest(
+        "button, a, input, select, textarea, label"
+      );
+
+      // The title-only summary is intentionally a button that fills the compact
+      // tile, so clicking it should still expand the card.
+      if (interactive?.classList.contains("guide-card-summary")) {
+        if (card.classList.contains("is-expanded")) {
+          collapseCard(card);
+        } else {
+          expandCard(card);
+        }
+        return;
+      }
+
+      // Open guide, download and collapse controls should keep their own action.
+      if (interactive) return;
+
+      // Anywhere else on the tile toggles it: compact -> expanded,
+      // expanded -> compact.
+      if (card.classList.contains("is-expanded")) {
+        collapseCard(card);
+      } else {
+        expandCard(card);
+      }
+    });
+  });
+
+  document.querySelectorAll(".guide-card-collapse").forEach((button) => {
+    button.addEventListener("click", () => {
+      const card = button.closest(".guide-card");
+      collapseCard(card);
+      card?.querySelector(".guide-card-summary")?.focus();
+    });
+  });
 
   document.querySelectorAll(".open-guide").forEach((button) => {
     button.addEventListener("click", () => openGuide(button.dataset.guide));
   });
 }
+
+function resetGuideTiles() {
+  document.querySelectorAll(".guide-card").forEach((card) => {
+    card.classList.remove("is-expanded");
+    card.classList.add("is-collapsed");
+    card.querySelector(".guide-card-summary")?.setAttribute("aria-expanded", "false");
+  });
+}
+
 
 function openGuide(id) {
   activeGuide = guides.find((guide) => guide.id === id);
@@ -600,6 +692,7 @@ function closeGuide(updateHistory = true) {
   reader.hidden = true;
   document.body.classList.remove("reader-open");
   reader.classList.remove("wide-guide");
+  resetGuideTiles();
   activeGuide = null;
   currentPage = 0;
   if (document.fullscreenElement) document.exitFullscreen?.();
@@ -770,6 +863,50 @@ bookViewport?.addEventListener("lostpointercapture", () => {
   panPointerId = null;
 });
 
+// In guide-only fullscreen, the mouse wheel zooms the page instead of scrolling it.
+// The zoom is centred around the pointer position so the area being inspected stays
+// under the mouse as closely as possible. Once enlarged, click-and-drag panning
+// continues to work using the pointer handlers above.
+bookViewport?.addEventListener("wheel", (event) => {
+  if (document.fullscreenElement !== bookWrap || !activeGuide) return;
+
+  event.preventDefault();
+
+  const direction = event.deltaY < 0 ? 1 : -1;
+  const wheelStep = 0.10;
+  const oldZoom = zoomLevel;
+  const newZoom = Math.min(
+    ZOOM_MAX,
+    Math.max(ZOOM_MIN, Math.round((zoomLevel + direction * wheelStep) * 100) / 100)
+  );
+
+  if (newZoom === oldZoom) return;
+
+  const rect = bookViewport.getBoundingClientRect();
+  const pointerX = event.clientX - rect.left;
+  const pointerY = event.clientY - rect.top;
+
+  // Record the content point underneath the cursor before resizing.
+  const contentX = bookViewport.scrollLeft + pointerX;
+  const contentY = bookViewport.scrollTop + pointerY;
+  const scaleRatio = newZoom / oldZoom;
+
+  setZoom(newZoom);
+
+  requestAnimationFrame(() => {
+    if (!bookViewport) return;
+
+    // Keep the same content location approximately beneath the pointer.
+    if (newZoom > 1) {
+      bookViewport.scrollLeft = contentX * scaleRatio - pointerX;
+      bookViewport.scrollTop = contentY * scaleRatio - pointerY;
+    } else {
+      bookViewport.scrollLeft = 0;
+      bookViewport.scrollTop = 0;
+    }
+  });
+}, { passive: false });
+
 fullscreenButton?.addEventListener("click", async () => {
   try {
     if (!document.fullscreenElement) {
@@ -838,6 +975,8 @@ reader.addEventListener("touchend", (event) => {
 
 document.querySelectorAll("[data-home]").forEach((link) => {
   link.addEventListener("click", (event) => {
+    resetGuideTiles();
+
     if (!reader.hidden) {
       event.preventDefault();
       closeGuide();

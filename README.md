@@ -47,3 +47,19 @@ No framework or build process is required.
 
 
 - ODPS Interim Standing Financial Instructions: 9-page landscape guide with PDF download
+
+- Added a dedicated Tools page linked from the homepage.
+- Added Thresholds & Notices (PA23) Decision Tree using the supplied v5.1 decision logic and content, redesigned to match the ODPS site.
+
+- PA23 Thresholds & Notices decision tree updated against the 21 August 2026 fact-check/change report:
+  2026–27 thresholds, NHS central-government classification, PSR/exemption gates, contract-value test,
+  commencement-date transition, route-based notice logic and authority/lifecycle notice reminders.
+
+- Added compact expandable help guidance to the PA23 assessment for exempt-contract examples,
+  contract-category examples, and the User Choice direct-award justification.
+
+- Reworked the PA23 PDF-summary output into a dedicated A4 print document with print-safe sections,
+  page-break protection for summary rows and notice cards, and professional ODPS/NHS styling.
+
+- Replaced the PA23 PDF popup/print workflow with a self-contained direct PDF download.
+  The PDF is generated entirely in the browser, requires no pop-up window and preserves grouped page elements.
