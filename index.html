@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#003d78" />
+  <meta name="description" content="Practical procurement guides for One Dorset Procurement Service colleagues." />
+  <title>ODPS Procurement Guides</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#" data-home aria-label="ODPS Procurement Guides home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" role="img">
+            <path d="M8 7h24a8 8 0 0 1 8 8v26H16a8 8 0 0 1-8-8V7Z" fill="currentColor" opacity=".16"/>
+            <path d="M10 8h22a7 7 0 0 1 7 7v23H17a7 7 0 0 1-7-7V8Z" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M16 15h16M16 21h16M16 27h11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>
+          <strong>ODPS</strong>
+          <small>Procurement Guides</small>
+        </span>
+      </a>
+
+      <div class="nhs-badge" aria-label="NHS">NHS</div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="home-view">
+      <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
+
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">One Dorset Procurement Service</span>
+          <h1>Clear guides for<br><span>confident procurement.</span></h1>
+          <p class="hero-lead">
+            Simple, visual step-by-step guidance for common ODPS processes — designed to be easy to follow while you work.
+          </p>
+          <a class="primary-cta" href="#guides">
+            Browse guides
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+        <div class="hero-card" aria-hidden="true">
+          <div class="mini-book">
+            <div class="mini-page mini-page-back"></div>
+            <div class="mini-page mini-page-front">
+              <div class="mini-topline"></div>
+              <div class="mini-number">01</div>
+              <div class="mini-title">Recommendation report<br>on E-Sign</div>
+              <div class="mini-lines">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="mini-button">Next step →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section" id="guides">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Guide library</span>
+            <h2>Choose a guide</h2>
+          </div>
+          <p>More ODPS guides can be added to this library using the same page-turn format.</p>
+        </div>
+
+        <div class="guide-grid" id="guide-grid">
+          <!-- Guide cards are rendered from app.js -->
+        </div>
+      </div>
+    </section>
+
+    <section class="principles">
+      <div class="shell principles-grid">
+        <article>
+          <span class="principle-icon" aria-hidden="true">1</span>
+          <h3>One step at a time</h3>
+          <p>Each guide is broken into full-page visual instructions, so you can focus on the task in front of you.</p>
+        </article>
+        <article>
+          <span class="principle-icon" aria-hidden="true">✓</span>
+          <h3>Built for confidence</h3>
+          <p>Progress controls, step names and page numbers make it clear where you are and what comes next.</p>
+        </article>
+        <article>
+          <span class="principle-icon" aria-hidden="true">+</span>
+          <h3>Ready to grow</h3>
+          <p>The guide library is data-driven. Add future guides without rebuilding the reader experience.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div class="reader" id="reader" hidden>
+    <div class="reader-topbar">
+      <button class="text-button" id="close-reader" type="button">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12.5 4-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        All guides
+      </button>
+      <div class="reader-brand">
+        <strong id="reader-short-title">E-Sign</strong>
+        <span id="reader-counter">Step 1 of 3</span>
+      </div>
+      <div class="reader-tools">
+        <a class="reader-download" id="reader-download" href="#" download hidden>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m0 0 3.5-3.5M10 12 6.5 8.5M4 16h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="reader-download-label">Download PDF</span>
+        </a>
+        <button class="icon-button" id="fullscreen-button" type="button" aria-label="Toggle full screen">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="reader-stage">
+      <aside class="step-rail" aria-label="Guide progress">
+        <div class="step-rail-title" id="step-rail-title">Guide steps</div>
+        <ol id="step-list"></ol>
+      </aside>
+
+      <div class="book-wrap">
+        <a class="step-resource-link" id="step-resource-link" href="#" target="_blank" rel="noopener noreferrer" hidden>
+          <span class="step-resource-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M14 5h5v5M13 11l6-6M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>
+            <small>Quick link for this step</small>
+            <strong id="step-resource-label">Open E-Sign</strong>
+          </span>
+          <span class="step-resource-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <div class="book-shell" id="book-shell">
+          <div class="page-stack page-stack-3" aria-hidden="true"></div>
+          <div class="page-stack page-stack-2" aria-hidden="true"></div>
+          <div class="page-stack page-stack-1" aria-hidden="true"></div>
+
+          <div class="page-turner" id="page-turner">
+            <img id="guide-page" src="" alt="" />
+          </div>
+        </div>
+
+        <div class="reader-actions">
+          <button class="secondary-button" id="prev-button" type="button">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12 4-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Previous
+          </button>
+          <div class="mobile-progress" id="mobile-progress" aria-hidden="true"></div>
+          <button class="primary-button" id="next-button" type="button">
+            <span id="next-label">Next step</span>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+
+      </div>
+
+      <aside class="reader-meta">
+        <span class="eyebrow" id="current-unit-label">Current step</span>
+        <h2 id="step-title"></h2>
+        <p id="step-description"></p>
+        <div class="reader-tip">
+          <span aria-hidden="true">⌨</span>
+          <p>Use the left and right arrow keys to move through the guide.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>One Dorset Procurement Service (ODPS)</span>
+      <span>One Dorset, One Team, Better Together</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
