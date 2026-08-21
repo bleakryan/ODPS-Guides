@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#003d78" />
+  <title>UHD Recommendation Reports – Select Document | ODPS</title>
+  <link rel="stylesheet" href="../../styles.css" />
+  <style>
+    .documents-hero {
+      padding: 54px 0 38px;
+      background:
+        radial-gradient(circle at 88% 10%, rgba(0,138,150,.10), transparent 20rem),
+        linear-gradient(120deg, #fff, #f3f8fc);
+      border-bottom: 1px solid var(--line);
+    }
+    .documents-back {
+      display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px;
+      color: var(--deep-blue); text-decoration: none; font-weight: 700;
+    }
+    .documents-back svg { width: 18px; height: 18px; }
+    .documents-hero h1 {
+      margin: 9px 0 13px; color: var(--navy);
+      font-size: clamp(36px, 5.8vw, 58px); line-height: 1.03; letter-spacing: -.045em;
+    }
+    .documents-hero p {
+      max-width: 760px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.7;
+    }
+    .documents-main { padding: 52px 0 88px; }
+    .documents-note {
+      margin-bottom: 24px; padding: 15px 18px;
+      border: 1px solid #b9d7de; border-left: 4px solid var(--teal);
+      border-radius: 13px; background: #f0fafa; color: var(--deep-blue);
+      font-size: 13px; line-height: 1.55;
+    }
+    .document-list { display: grid; gap: 13px; }
+    .document-card {
+      display: grid; grid-template-columns: 54px minmax(0, 1fr) auto;
+      align-items: center; gap: 18px; padding: 20px 22px;
+      border: 1px solid #dbe8f2; border-radius: 17px; background: #fff;
+      box-shadow: 0 10px 28px rgba(10,58,102,.06);
+    }
+    .document-icon {
+      width: 50px; height: 50px; display: grid; place-items: center;
+      border-radius: 14px; background: var(--teal-soft); color: var(--teal);
+    }
+    .document-icon svg { width: 29px; height: 29px; }
+    .document-category {
+      color: var(--teal); font-size: 10px; font-weight: 800;
+      letter-spacing: .1em; text-transform: uppercase;
+    }
+    .document-copy h2 {
+      margin: 5px 0 4px; color: var(--navy); font-size: 18px;
+      line-height: 1.3; letter-spacing: -.018em;
+    }
+    .document-copy p { margin: 0; color: var(--muted); font-size: 12px; }
+    .download-document {
+      min-width: 118px; padding: 11px 15px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--nhs-blue), var(--deep-blue));
+      color: #fff; text-decoration: none; font-weight: 700;
+      box-shadow: 0 8px 20px rgba(0,94,184,.15);
+    }
+    .download-document:hover { transform: translateY(-1px); }
+    .download-document svg { width: 17px; height: 17px; }
+    @media (max-width: 700px) {
+      .document-card { grid-template-columns: 48px minmax(0, 1fr); }
+      .download-document { grid-column: 1 / -1; width: 100%; }
+      .document-icon { width: 46px; height: 46px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../../index.html" aria-label="One Dorset Procurement Service home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <path d="M8 7h24a8 8 0 0 1 8 8v26H16a8 8 0 0 1-8-8V7Z" fill="currentColor" opacity=".16"/>
+            <path d="M10 8h22a7 7 0 0 1 7 7v23H17a7 7 0 0 1-7-7V8Z" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M16 15h16M16 21h16M16 27h11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>
+          <strong>One Dorset Procurement Service</strong>
+          <small>Procurement Resources</small>
+        </span>
+      </a>
+      <a class="nhs-logo-link" href="https://intranet.uhd.nhs.uk/" aria-label="Open UHD intranet">
+        <img src="../../assets/nhs-logo.png" alt="NHS" />
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="documents-hero">
+      <div class="shell">
+        <a class="documents-back" href="../../tools.html">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12.5 4-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back to Tools
+        </a>
+        <span class="eyebrow">UHD Recommendation Reports</span>
+        <h1>Select Document</h1>
+        <p>Choose the document you need. Each download uses a cleaner, descriptive filename while preserving the original document itself.</p>
+      </div>
+    </section>
+
+    <section class="documents-main">
+      <div class="shell">
+        <div class="documents-note">
+          <strong>Use the correct approval route.</strong> Recommendation-report templates are grouped by contract value and approving authority. Use the Guidance Notes if you are unsure which document is appropriate.
+        </div>
+        <div class="document-list">
+
+          <article class="document-card">
+            <div class="document-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M13 6h15l8 8v28H13z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M28 6v9h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M18 23h13M18 29h13M18 35h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="document-copy">
+              <span class="document-category">Recommendation report</span>
+              <h2>Recommendation Report – £24k to £60k (Senior Category Manager)</h2>
+              <p>Word document</p>
+            </div>
+            <a class="download-document" href="../../assets/downloads/recommendation-reports/Recommendation_Report_24k_to_60k_Senior_Category_Manager_v7.docx" download="Recommendation_Report_24k_to_60k_Senior_Category_Manager_v7.docx">
+              Download
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M10 3v9m0 0 4-4m-4 4-4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </article>
+          <article class="document-card">
+            <div class="document-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M13 6h15l8 8v28H13z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M28 6v9h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M18 23h13M18 29h13M18 35h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="document-copy">
+              <span class="document-category">Recommendation report</span>
+              <h2>Recommendation Report – £60k to £120k (Head of Strategic Procurement)</h2>
+              <p>Word document</p>
+            </div>
+            <a class="download-document" href="../../assets/downloads/recommendation-reports/Recommendation_Report_60k_to_120k_Head_of_Strategic_Procurement_v7.docx" download="Recommendation_Report_60k_to_120k_Head_of_Strategic_Procurement_v7.docx">
+              Download
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M10 3v9m0 0 4-4m-4 4-4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </article>
+          <article class="document-card">
+            <div class="document-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M13 6h15l8 8v28H13z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M28 6v9h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M18 23h13M18 29h13M18 35h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="document-copy">
+              <span class="document-category">Recommendation report</span>
+              <h2>Recommendation Report – £120k to £240k (Deputy Chief Finance Officer)</h2>
+              <p>Word document</p>
+            </div>
+            <a class="download-document" href="../../assets/downloads/recommendation-reports/Recommendation_Report_120k_to_240k_Deputy_Chief_Finance_Officer_v7.docx" download="Recommendation_Report_120k_to_240k_Deputy_Chief_Finance_Officer_v7.docx">
+              Download
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M10 3v9m0 0 4-4m-4 4-4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </article>
+          <article class="document-card">
+            <div class="document-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M13 6h15l8 8v28H13z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M28 6v9h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M18 23h13M18 29h13M18 35h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="document-copy">
+              <span class="document-category">Recommendation report</span>
+              <h2>Recommendation Report – £240k to £480k (Chief Finance Officer)</h2>
+              <p>Word document</p>
+            </div>
+            <a class="download-document" href="../../assets/downloads/recommendation-reports/Recommendation_Report_240k_to_480k_Chief_Finance_Officer_v7.docx" download="Recommendation_Report_240k_to_480k_Chief_Finance_Officer_v7.docx">
+              Download
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M10 3v9m0 0 4-4m-4 4-4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </article>
+          <article class="document-card">
+            <div class="document-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M13 6h15l8 8v28H13z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M28 6v9h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M18 23h13M18 29h13M18 35h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="document-copy">
+              <span class="document-category">Recommendation report</span>
+              <h2>Recommendation Report – £480k to £720k (Chief Executive Officer)</h2>
+              <p>Word document</p>
+            </div>
+            <a class="download-document" href="../../assets/downloads/recommendation-reports/Recommendation_Report_480k_to_720k_Chief_Executive_Officer_v7.docx" download="Recommendation_Report_480k_to_720k_Chief_Executive_Officer_v7.docx">
+              Download
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M10 3v9m0 0 4-4m-4 4-4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </article>
+          <article class="document-card">
+            <div class="document-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M13 6h15l8 8v28H13z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M28 6v9h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M18 23h13M18 29h13M18 35h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="document-copy">
+              <span class="document-category">Recommendation report</span>
+              <h2>Recommendation Report – Over £720k (FPC / Board of Directors)</h2>
+              <p>Word document</p>
+            </div>
+            <a class="download-document" href="../../assets/downloads/recommendation-reports/Recommendation_Report_Over_720k_FPC_Board_v7.docx" download="Recommendation_Report_Over_720k_FPC_Board_v7.docx">
+              Download
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M10 3v9m0 0 4-4m-4 4-4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </article>
+          <article class="document-card">
+            <div class="document-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M13 6h15l8 8v28H13z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M28 6v9h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M18 23h13M18 29h13M18 35h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="document-copy">
+              <span class="document-category">Supporting document</span>
+              <h2>Agreement Approval</h2>
+              <p>Word document</p>
+            </div>
+            <a class="download-document" href="../../assets/downloads/recommendation-reports/Agreement_Approval.docx" download="Agreement_Approval.docx">
+              Download
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M10 3v9m0 0 4-4m-4 4-4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </article>
+          <article class="document-card">
+            <div class="document-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M13 6h15l8 8v28H13z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M28 6v9h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M18 23h13M18 29h13M18 35h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="document-copy">
+              <span class="document-category">Cover sheet</span>
+              <h2>Board of Directors Cover Sheet – January 2026</h2>
+              <p>Word document</p>
+            </div>
+            <a class="download-document" href="../../assets/downloads/recommendation-reports/Board_of_Directors_Cover_Sheet_January_2026.docx" download="Board_of_Directors_Cover_Sheet_January_2026.docx">
+              Download
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M10 3v9m0 0 4-4m-4 4-4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </article>
+          <article class="document-card">
+            <div class="document-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M13 6h15l8 8v28H13z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M28 6v9h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M18 23h13M18 29h13M18 35h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="document-copy">
+              <span class="document-category">Cover sheet</span>
+              <h2>Finance & Performance Committee Cover Sheet – January 2026</h2>
+              <p>Word document</p>
+            </div>
+            <a class="download-document" href="../../assets/downloads/recommendation-reports/Finance_Performance_Committee_Cover_Sheet_January_2026.docx" download="Finance_Performance_Committee_Cover_Sheet_January_2026.docx">
+              Download
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M10 3v9m0 0 4-4m-4 4-4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </article>
+          <article class="document-card">
+            <div class="document-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M13 6h15l8 8v28H13z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M28 6v9h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M18 23h13M18 29h13M18 35h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="document-copy">
+              <span class="document-category">Guide</span>
+              <h2>eSign Guide – Adding Information Governance Approval to Recommendation Reports</h2>
+              <p>PDF</p>
+            </div>
+            <a class="download-document" href="../../assets/downloads/recommendation-reports/eSign_Guide_Adding_IG_Approval_to_Recommendation_Reports.pdf" download="eSign_Guide_Adding_IG_Approval_to_Recommendation_Reports.pdf">
+              Download
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M10 3v9m0 0 4-4m-4 4-4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </article>
+          <article class="document-card">
+            <div class="document-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M13 6h15l8 8v28H13z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M28 6v9h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M18 23h13M18 29h13M18 35h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="document-copy">
+              <span class="document-category">Recommendation report</span>
+              <h2>Recommendation Report – Clinical / Technical Variation</h2>
+              <p>Word document</p>
+            </div>
+            <a class="download-document" href="../../assets/downloads/recommendation-reports/Recommendation_Report_Clinical_Technical_Variation.doc" download="Recommendation_Report_Clinical_Technical_Variation.doc">
+              Download
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M10 3v9m0 0 4-4m-4 4-4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>Controlled Environment | One Dorset Procurement Service (ODPS)</span>
+      <span>One Dorset, One Team, Better Together</span>
+    </div>
+  </footer>
+</body>
+</html>

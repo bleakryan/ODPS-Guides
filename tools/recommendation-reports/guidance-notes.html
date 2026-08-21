@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#003d78" />
+  <title>UHD Recommendation Reports – Guidance Notes | ODPS</title>
+  <link rel="stylesheet" href="../../styles.css" />
+  <style>
+    .guidance-hero {
+      padding: 54px 0 38px;
+      background:
+        radial-gradient(circle at 88% 10%, rgba(0,138,150,.10), transparent 20rem),
+        linear-gradient(120deg, #fff, #f3f8fc);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .guidance-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      color: var(--deep-blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .guidance-back svg { width: 18px; height: 18px; }
+
+    .guidance-hero h1 {
+      margin: 9px 0 13px;
+      max-width: 790px;
+      color: var(--navy);
+      font-size: clamp(36px, 5.8vw, 58px);
+      line-height: 1.03;
+      letter-spacing: -.045em;
+    }
+
+    .guidance-hero p {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .guidance-main { padding: 52px 0 86px; }
+
+    .guidance-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .guidance-content {
+      display: grid;
+      gap: 18px;
+    }
+
+    .guidance-card {
+      padding: 27px 29px;
+      border: 1px solid #dbe8f2;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 12px 32px rgba(10,58,102,.07);
+    }
+
+    .guidance-card h2 {
+      margin: 0 0 14px;
+      color: var(--navy);
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: -.025em;
+    }
+
+    .guidance-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .guidance-card p + p { margin-top: 12px; }
+
+    .guidance-list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .guidance-list li + li { margin-top: 10px; }
+    .guidance-card strong { color: var(--deep-blue); }
+
+    .guidance-callout {
+      border-left: 4px solid var(--teal);
+      background: #f0fafa;
+    }
+
+    .guidance-warning {
+      border-left: 4px solid #d5a11f;
+      background: #fffaf0;
+    }
+
+    .guidance-cost {
+      color: #b42318;
+      font-weight: 800;
+    }
+
+    .guidance-side {
+      position: sticky;
+      top: 102px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .side-card {
+      padding: 20px;
+      border: 1px solid #dbe8f2;
+      border-radius: 16px;
+      background: #f7fafc;
+    }
+
+    .side-card h3 {
+      margin: 0 0 9px;
+      color: var(--navy);
+      font-size: 16px;
+    }
+
+    .side-card p,
+    .side-card li {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .side-card ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+
+    .mini-rule {
+      margin: 13px 0;
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 880px) {
+      .guidance-layout { grid-template-columns: 1fr; }
+      .guidance-side { position: static; order: -1; }
+    }
+
+    @media (max-width: 620px) {
+      .guidance-hero { padding-top: 38px; }
+      .guidance-card { padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../../index.html" aria-label="One Dorset Procurement Service home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <path d="M8 7h24a8 8 0 0 1 8 8v26H16a8 8 0 0 1-8-8V7Z" fill="currentColor" opacity=".16"/>
+            <path d="M10 8h22a7 7 0 0 1 7 7v23H17a7 7 0 0 1-7-7V8Z" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M16 15h16M16 21h16M16 27h11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>
+          <strong>One Dorset Procurement Service</strong>
+          <small>Procurement Resources</small>
+        </span>
+      </a>
+      <a class="nhs-logo-link" href="https://intranet.uhd.nhs.uk/" aria-label="Open UHD intranet">
+        <img src="../../assets/nhs-logo.png" alt="NHS" />
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="guidance-hero">
+      <div class="shell">
+        <a class="guidance-back" href="../../tools.html">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12.5 4-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back to Tools
+        </a>
+        <span class="eyebrow">UHD Recommendation Reports</span>
+        <h1>Guidance Notes</h1>
+        <p>Practical points to check when preparing and submitting UHD recommendation reports.</p>
+      </div>
+    </section>
+
+    <section class="guidance-main">
+      <div class="shell guidance-layout">
+        <div class="guidance-content">
+          <article class="guidance-card guidance-callout">
+            <h2>Approval &amp; pre-meet requirements</h2>
+            <p>If the report requires approval by Deputy or Chief Finance Officer, Finance Performance Committee and Board of Directors, a pre-meet may be required with the author, Category Manager and HoP prior to submitting through ImageNow.</p>
+          </article>
+
+          <article class="guidance-card">
+            <h2>Reports under £60k</h2>
+            <ul class="guidance-list">
+              <li>If under £60k but fully compliant and includes full life cycle costs and winning bid, the Category Manager can approve the summary report.</li>
+              <li>If not compliant but under £60k, this will need to be approved by HoP.</li>
+              <li>If under £60k but fully compliant, no report is needed, but a full audit trail must be available on request at any time and kept in line with retention policy etc.</li>
+            </ul>
+          </article>
+
+          <article class="guidance-card guidance-warning">
+            <h2>Framework Agreements (FA)</h2>
+            <p>Please ensure the correct templates have been used. If it is not a mini competition, it will require CFO approval.</p>
+          </article>
+
+          <article class="guidance-card">
+            <h2>Figures, VAT &amp; formatting</h2>
+            <ul class="guidance-list">
+              <li>All figures for approving committees will now be based on <strong>inclusive of VAT</strong> and should always be stated as this. The OJEU value excludes VAT, but wording has been adjusted to cover this difference in thresholds.</li>
+              <li>Please do not use decimals. Use the <strong>£</strong> sign and commas for thousands, and use <strong>Calibri 11</strong>.</li>
+              <li>Please ensure all cost pressure figures are highlighted in red, with brackets in red and bold, for example <span class="guidance-cost">(£1,000 PA)</span>.</li>
+            </ul>
+          </article>
+
+          <article class="guidance-card">
+            <h2>Risks, conflicts &amp; benchmarking</h2>
+            <p>Please ensure you have checked this does not impact national strategies such as NCP, VCM or CSR plans. Also consider whether you are comfortable that the NHS Spend Comparison service has been used to benchmark these agreements.</p>
+          </article>
+
+          <article class="guidance-card">
+            <h2>Using the latest template &amp; telling the story</h2>
+            <ul class="guidance-list">
+              <li>Please only use the latest template and remove <strong>DRAFT</strong>. Ensure consistency and avoid unnecessary repetition.</li>
+              <li>Please do not rely on the template to tell your story. If something did not happen, do not state that it did — for example evaluations, in accordance with SFIs and EU regs, post tender etc. Make no assumptions and know the audience who will approve the final report.</li>
+            </ul>
+          </article>
+
+          <article class="guidance-card">
+            <h2>Total contract value &amp; equipment</h2>
+            <p>Include the whole life of the contract in the total contract value — contract term plus extensions if applicable. If equipment is involved, ensure the appendix is clear regarding warranty.</p>
+          </article>
+
+          <article class="guidance-card">
+            <h2>Business case, new services &amp; financial visibility</h2>
+            <ul class="guidance-list">
+              <li>If the final recommendation does not reconcile back to the approved business case, further approval will need to be sought and the Finance Business Partner (FBP) and Directorate Manager (DM) made aware.</li>
+              <li>If this is a new service and there are no current costs, state the figure/funds approved so that if the recommendation is lower, the cost avoidance matches and this is made clear.</li>
+              <li>Please ensure the FBP and DM names are included so final approvers are aware they have had visibility and the FBP has validated costs/supports recommendations.</li>
+            </ul>
+          </article>
+
+          <article class="guidance-card">
+            <h2>Terms &amp; Conditions and framework checks</h2>
+            <p>Ensure all T&amp;Cs have been checked and all framework points addressed. Responsibility for this sits with us and not the framework provider. We would be liable if the contract award notice had not been reviewed and the Trust/specification were not covered.</p>
+          </article>
+
+          <article class="guidance-card guidance-warning">
+            <h2>Recommendation not awarding to the 1st placed tender</h2>
+            <p>Please seek guidance from the Category Manager regarding a recommendation that does not award to the 1st placed tender as per award criteria, as this may be rejected and not supported.</p>
+          </article>
+
+          <article class="guidance-card">
+            <h2>Reports going to DCFO / CFO / FPC / BoD</h2>
+            <p>For all reports going to DCFO/CFO/FPC and BoD, please ensure the scoring summary and commercial summary have been validated by the FBP and are clear. This will be checked and may be rejected if not.</p>
+          </article>
+
+          <article class="guidance-card">
+            <h2>Agreement Approvals &amp; NDAs</h2>
+            <ul class="guidance-list">
+              <li>Agreement Approvals should only be for an agreement already covered by a previous report.</li>
+              <li>For completion of Non-Disclosure Agreements, please liaise with the Healthcare Service Contracts Coordinator/Paralegal. This will require sign-off by at least Grade 8a.</li>
+            </ul>
+          </article>
+        </div>
+
+        <aside class="guidance-side">
+          <div class="side-card">
+            <h3>Key reminders</h3>
+            <ul>
+              <li>Use the latest template.</li>
+              <li>State committee figures inclusive of VAT.</li>
+              <li>Use whole-life contract value.</li>
+              <li>Include FBP and DM visibility where required.</li>
+              <li>Keep the audit trail available.</li>
+            </ul>
+          </div>
+
+          <div class="side-card">
+            <h3>Approver abbreviations</h3>
+            <p><strong>HoP</strong> — Head of Procurement</p>
+            <hr class="mini-rule">
+            <p><strong>FBP</strong> — Finance Business Partner</p>
+            <hr class="mini-rule">
+            <p><strong>DM</strong> — Directorate Manager</p>
+            <hr class="mini-rule">
+            <p><strong>FPC</strong> — Finance Performance Committee</p>
+            <hr class="mini-rule">
+            <p><strong>BoD</strong> — Board of Directors</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>Controlled Environment | One Dorset Procurement Service (ODPS)</span>
+      <span>One Dorset, One Team, Better Together</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -231,6 +231,53 @@
 
     .tools-coming strong { color: var(--navy); }
 
+    .report-icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 172px;
+      height: 172px;
+      transform: translate(-50%, -50%);
+      color: rgba(255,255,255,.96);
+    }
+
+    .report-icon path,
+    .report-icon rect,
+    .report-icon circle {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .tool-secondary-button {
+      min-height: 46px;
+      padding: 11px 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid #bfd5e6;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--deep-blue);
+      text-decoration: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tool-secondary-button:hover {
+      background: #f2f8fb;
+      border-color: #8fb8d3;
+    }
+
+    .tool-card[data-tool="reports"] .tool-visual {
+      background:
+        radial-gradient(circle at 72% 20%, rgba(76,213,223,.32), transparent 22%),
+        linear-gradient(155deg, #008a96, #006f85 52%, #064884);
+    }
+
     @media (max-width: 850px) {
       .tools-grid { grid-template-columns: 1fr; }
     }
@@ -331,6 +378,41 @@
             </div>
           </article>
 
+          <article class="tool-card is-collapsed" id="recommendation-report-card" data-tool="reports">
+            <button class="tool-summary" type="button" aria-expanded="false" aria-controls="recommendation-report-details">
+              <strong>UHD Recommendation Reports</strong>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+
+            <div class="tool-expanded" id="recommendation-report-details">
+              <div class="tool-content">
+                <div class="tool-kicker">Recommendation reports</div>
+                <h2>UHD Recommendation Reports</h2>
+                <p>Access the current guidance notes for preparing recommendation reports, or move into the report-selection route.</p>
+                <div class="tool-actions">
+                  <a class="primary-button" href="tools/recommendation-reports/guidance-notes.html">
+                    Guidance Notes
+                    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                  <a class="tool-secondary-button" href="tools/recommendation-reports/select-document.html">Select Document</a>
+                </div>
+              </div>
+
+              <div class="tool-visual" aria-hidden="true">
+                <svg class="report-icon" viewBox="0 0 180 180">
+                  <rect x="44" y="22" width="92" height="136" rx="10"/>
+                  <path d="M63 52h54M63 70h54M63 88h40"/>
+                  <path d="m64 119 13 13 37-39"/>
+                  <circle cx="69" cy="126" r="25"/>
+                </svg>
+              </div>
+
+              <button class="tool-collapse" type="button" aria-label="Collapse UHD Recommendation Reports tool">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 12 4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </article>
+
           <aside class="tools-coming">
             <span aria-hidden="true">+</span>
             <div>
@@ -351,31 +433,42 @@
   </footer>
 
   <script>
-    const card = document.querySelector("#threshold-tool-card");
-    const summary = card.querySelector(".tool-summary");
-    const collapse = card.querySelector(".tool-collapse");
+    const toolCards = Array.from(document.querySelectorAll(".tool-card"));
 
-    function setExpanded(expanded) {
+    function setExpanded(card, expanded) {
+      toolCards.forEach(otherCard => {
+        if (otherCard !== card) {
+          otherCard.classList.remove("is-expanded");
+          otherCard.classList.add("is-collapsed");
+          otherCard.querySelector(".tool-summary")?.setAttribute("aria-expanded", "false");
+        }
+      });
+
       card.classList.toggle("is-expanded", expanded);
       card.classList.toggle("is-collapsed", !expanded);
-      summary.setAttribute("aria-expanded", String(expanded));
+      card.querySelector(".tool-summary")?.setAttribute("aria-expanded", String(expanded));
     }
 
-    card.addEventListener("click", (event) => {
-      const interactive = event.target.closest("button, a, input, select, textarea, label");
+    toolCards.forEach(card => {
+      const summary = card.querySelector(".tool-summary");
+      const collapse = card.querySelector(".tool-collapse");
 
-      if (interactive === summary) {
-        setExpanded(!card.classList.contains("is-expanded"));
-        return;
-      }
+      card.addEventListener("click", event => {
+        const interactive = event.target.closest("button, a, input, select, textarea, label");
 
-      if (interactive) return;
-      setExpanded(!card.classList.contains("is-expanded"));
-    });
+        if (interactive === summary) {
+          setExpanded(card, !card.classList.contains("is-expanded"));
+          return;
+        }
 
-    collapse.addEventListener("click", () => {
-      setExpanded(false);
-      summary.focus();
+        if (interactive) return;
+        setExpanded(card, !card.classList.contains("is-expanded"));
+      });
+
+      collapse?.addEventListener("click", () => {
+        setExpanded(card, false);
+        summary?.focus();
+      });
     });
   </script>
 </body>

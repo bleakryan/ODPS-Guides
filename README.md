@@ -63,3 +63,12 @@ No framework or build process is required.
 
 - Replaced the PA23 PDF popup/print workflow with a self-contained direct PDF download.
   The PDF is generated entirely in the browser, requires no pop-up window and preserves grouped page elements.
+
+- Added UHD Recommendation Reports as a second expandable Tools tile.
+- Added a styled Guidance Notes page based on the supplied recommendation-report guidance.
+- Added Guidance Notes and Select Report actions; Select Report is reserved for the next workflow.
+
+- Renamed Select Report to Select Document.
+- Added a Recommendation Reports document library with direct downloads and cleaned display/download names.
+- Bundled all supplied recommendation-report templates, committee cover sheets, Agreement Approval,
+  IG/eSign guide and Clinical/Technical Variation document.
