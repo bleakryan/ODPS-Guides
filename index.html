@@ -47,6 +47,18 @@
             Browse guides
             <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
+
+          <div class="hero-quick-links" aria-label="Quick links">
+            <span class="hero-quick-label">Quick access</span>
+            <div class="hero-quick-row">
+              <a class="hero-quick-link" href="https://ubook.uhd.nhs.uk/" target="_blank" rel="noopener noreferrer" aria-label="Open uBook Resource Booking in a new tab">
+                <img src="assets/ubook-open-link.png" alt="uBook — Click here to open" />
+              </a>
+              <a class="hero-quick-link" href="https://www.esign.co.uk/products/electronic-signature/online/?campaignid=22806957279&adgroupid=&creative=&matchtype=&network=x&device=c&keyword=&gad_source=1&gad_campaignid=22806958452&gclid=Cj0KCQjww4TGBhCKARIsAFLXndT3X019wFtnOgdetSwJWBQyQHwm1I4fkyKZJX_4vGw8XTEZTkiFMokaAiSaEALw_wcB" target="_blank" rel="noopener noreferrer" aria-label="Open E-Sign in a new tab">
+                <img src="assets/esign-open-link.png" alt="E-Sign — Click here to open" />
+              </a>
+            </div>
+          </div>
         </div>
 
         <div class="hero-card" aria-hidden="true">
@@ -114,14 +126,26 @@
         <span id="reader-counter">Step 1 of 3</span>
       </div>
       <div class="reader-tools">
+        <div class="zoom-controls" aria-label="Guide zoom controls">
+          <button class="zoom-button" id="zoom-out-button" type="button" aria-label="Zoom out" title="Zoom out">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <button class="zoom-value" id="zoom-reset-button" type="button" aria-label="Reset zoom to 100 percent" title="Reset zoom">
+            <span id="zoom-value">100%</span>
+          </button>
+          <button class="zoom-button" id="zoom-in-button" type="button" aria-label="Zoom in" title="Zoom in">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10M10 5v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
         <a class="reader-download" id="reader-download" href="#" download hidden>
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m0 0 3.5-3.5M10 12 6.5 8.5M4 16h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span id="reader-download-label">Download PDF</span>
         </a>
-        <button class="icon-button" id="fullscreen-button" type="button" aria-label="Toggle full screen">
+        <button class="fullscreen-button" id="fullscreen-button" type="button" aria-label="Enter full screen" title="Enter full screen">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
+          <span id="fullscreen-label">Full screen</span>
         </button>
       </div>
     </div>
@@ -144,13 +168,31 @@
           <span class="step-resource-arrow" aria-hidden="true">↗</span>
         </a>
 
-        <div class="book-shell" id="book-shell">
-          <div class="page-stack page-stack-3" aria-hidden="true"></div>
-          <div class="page-stack page-stack-2" aria-hidden="true"></div>
-          <div class="page-stack page-stack-1" aria-hidden="true"></div>
+        <div class="fullscreen-float-tools" id="fullscreen-float-tools" aria-label="Full-screen guide controls">
+          <span class="fullscreen-page-counter" id="fullscreen-page-counter">Page 1 of 1</span>
+          <button class="fullscreen-tool-button" id="fullscreen-zoom-out-button" type="button" aria-label="Zoom out" title="Zoom out">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <button class="fullscreen-zoom-value" id="fullscreen-zoom-reset-button" type="button" aria-label="Reset zoom to 100 percent" title="Reset zoom">
+            <span id="fullscreen-zoom-value">100%</span>
+          </button>
+          <button class="fullscreen-tool-button" id="fullscreen-zoom-in-button" type="button" aria-label="Zoom in" title="Zoom in">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10M10 5v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <button class="fullscreen-tool-button fullscreen-exit" id="fullscreen-exit-button" type="button" aria-label="Exit full screen" title="Exit full screen">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
 
-          <div class="page-turner" id="page-turner">
-            <img id="guide-page" src="" alt="" />
+        <div class="book-viewport" id="book-viewport">
+          <div class="book-shell" id="book-shell">
+            <div class="page-stack page-stack-3" aria-hidden="true"></div>
+            <div class="page-stack page-stack-2" aria-hidden="true"></div>
+            <div class="page-stack page-stack-1" aria-hidden="true"></div>
+
+            <div class="page-turner" id="page-turner">
+              <img id="guide-page" src="" alt="" draggable="false" />
+            </div>
           </div>
         </div>
 
@@ -172,6 +214,10 @@
         <span class="eyebrow" id="current-unit-label">Current step</span>
         <h2 id="step-title"></h2>
         <p id="step-description"></p>
+        <a class="reader-guide-link" id="reader-guide-link" href="#" target="_blank" rel="noopener noreferrer" hidden>
+          <img id="reader-guide-link-image" src="" alt="" />
+          <span class="sr-only" id="reader-guide-link-label">Open related system</span>
+        </a>
         <div class="reader-tip">
           <span aria-hidden="true">⌨</span>
           <p>Use the left and right arrow keys to move through the guide.</p>

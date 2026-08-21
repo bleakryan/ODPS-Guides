@@ -11,6 +11,12 @@ const guides = [
     pageLabel: "Page",
     railLabel: "Guide pages",
     currentLabel: "Current page",
+    readerLink: {
+      url: "https://www.esign.co.uk/products/electronic-signature/online/?campaignid=22806957279&adgroupid=&creative=&matchtype=&network=x&device=c&keyword=&gad_source=1&gad_campaignid=22806958452&gclid=Cj0KCQjww4TGBhCKARIsAFLXndT3X019wFtnOgdetSwJWBQyQHwm1I4fkyKZJX_4vGw8XTEZTkiFMokaAiSaEALw_wcB",
+      image: "assets/esign-open-link.png",
+      alt: "E-Sign — Click here to open",
+      label: "Open E-Sign"
+    },
     download: {
       url: "assets/downloads/ODPS_E-Sign_ImageNow_Guide_Version_2.2.pdf",
       filename: "ODPS E-Sign & ImageNow Guide Version 2.2.pdf",
@@ -86,6 +92,12 @@ const guides = [
     pageLabel: "Page",
     railLabel: "Guide pages",
     currentLabel: "Current page",
+    readerLink: {
+      url: "https://ubook.uhd.nhs.uk/",
+      image: "assets/ubook-open-link.png",
+      alt: "uBook — Click here to open",
+      label: "Open uBook Resource Booking"
+    },
     download: {
       url: "assets/downloads/ODPS_uBook_Guide_v1.0.pdf",
       filename: "ODPS_uBook_Guide_v1.0.pdf",
@@ -269,6 +281,82 @@ const guides = [
         alt: 'ODPS Savings Reporting Standards page showing the standard operating model and reporting controls.'
       }
     ]
+  },
+  {
+    id: "odps-interim-standing-financial-instructions",
+    shortTitle: "Interim SFI",
+    kicker: "Financial instructions",
+    title: "ODPS Interim Standing Financial Instructions",
+    description:
+      "A nine-page ODPS guide to the interim Standing Financial Instruction changes, purchasing thresholds, contract values, procurement routes, FAQs and requester checklist.",
+    duration: "Reference guide",
+    coverTitle: "Interim Standing<br>Financial Instructions",
+    pageLabel: "Page",
+    railLabel: "Document pages",
+    currentLabel: "Current page",
+    aspectRatio: "16 / 9",
+    widerReader: true,
+    download: {
+      url: "assets/downloads/ODPS_Interim_Standing_Financial_Instructions.pdf",
+      filename: "ODPS Interim Standing Financial Instructions.pdf",
+      label: "Download PDF"
+    },
+    pages: [
+      {
+        title: "Interim SFI Changes - Buying Goods and Services",
+        description: "Cover page introducing the interim ODPS Standing Financial Instruction changes for buying goods and services.",
+        image: "assets/interim-sfi-page-1.png",
+        alt: "Cover of the ODPS Interim SFI Changes guide for buying goods and services."
+      },
+      {
+        title: "Why are things changing?",
+        description: "Explains why procurement processes and quotation thresholds are being aligned across the participating Trusts and outlines the two-phase transition.",
+        image: "assets/interim-sfi-page-2.png",
+        alt: "ODPS Interim SFI guide page explaining why procurement processes and financial thresholds are changing."
+      },
+      {
+        title: "Understanding the New Thresholds",
+        description: "Shows the new purchasing thresholds, minimum quotation requirements and the ODPS role during the transition and after go-live.",
+        image: "assets/interim-sfi-page-3.png",
+        alt: "ODPS Interim SFI guide page showing purchasing thresholds, quotes required and ODPS involvement."
+      },
+      {
+        title: "Understanding Total Contract Value",
+        description: "Explains how to estimate total contract value, aggregate recurring spend, manage additional spend and handle requirements where value cannot be reliably estimated.",
+        image: "assets/interim-sfi-page-4.png",
+        alt: "ODPS Interim SFI guide page explaining how to calculate total contract value and aggregate spend."
+      },
+      {
+        title: "Which Procurement Route Applies? (1)",
+        description: "Sets out requester requirements for purchases up to £10,000 and from over £10,000 to £25,000, including quotations, approvals and procurement support.",
+        image: "assets/interim-sfi-page-5.png",
+        alt: "ODPS Interim SFI guide page showing procurement routes for purchases up to £25,000."
+      },
+      {
+        title: "Which Procurement Route Applies? (2)",
+        description: "Explains procurement-led routes for purchases over £25,000, including minimum quotes, formal sourcing and regulated procurement above the relevant threshold.",
+        image: "assets/interim-sfi-page-6.png",
+        alt: "ODPS Interim SFI guide page showing procurement routes for purchases above £25,000."
+      },
+      {
+        title: "Questions & Answers (1)",
+        description: "Answers common questions about when to involve Procurement, compliance requirements, procurement contact points and aggregation of related purchases.",
+        image: "assets/interim-sfi-page-7.png",
+        alt: "ODPS Interim SFI questions and answers page covering procurement involvement and related purchases."
+      },
+      {
+        title: "Questions & Answers (2) & Contact Us",
+        description: "Provides further FAQs on estimating requirements and low-value purchases, explains the benefit of early engagement and lists ODPS contact routes.",
+        image: "assets/interim-sfi-page-8.png",
+        alt: "ODPS Interim SFI questions and answers page with procurement contact information."
+      },
+      {
+        title: "Requester Checklist",
+        description: "Supplementary guidance to help requesters plan and manage low-value purchases, covering requirements, approvals, quotes, value for money, risks and terms and conditions.",
+        image: "assets/interim-sfi-page-9.png",
+        alt: "ODPS Interim SFI requester checklist supplementary guidance page."
+      }
+    ]
   }
 ];
 
@@ -276,6 +364,20 @@ const grid = document.querySelector("#guide-grid");
 const reader = document.querySelector("#reader");
 const closeReader = document.querySelector("#close-reader");
 const fullscreenButton = document.querySelector("#fullscreen-button");
+const fullscreenLabel = document.querySelector("#fullscreen-label");
+const bookWrap = document.querySelector(".book-wrap");
+const fullscreenExitButton = document.querySelector("#fullscreen-exit-button");
+const fullscreenZoomOutButton = document.querySelector("#fullscreen-zoom-out-button");
+const fullscreenZoomInButton = document.querySelector("#fullscreen-zoom-in-button");
+const fullscreenZoomResetButton = document.querySelector("#fullscreen-zoom-reset-button");
+const fullscreenZoomValue = document.querySelector("#fullscreen-zoom-value");
+const fullscreenPageCounter = document.querySelector("#fullscreen-page-counter");
+const bookViewport = document.querySelector("#book-viewport");
+const bookShell = document.querySelector("#book-shell");
+const zoomOutButton = document.querySelector("#zoom-out-button");
+const zoomInButton = document.querySelector("#zoom-in-button");
+const zoomResetButton = document.querySelector("#zoom-reset-button");
+const zoomValue = document.querySelector("#zoom-value");
 const guidePage = document.querySelector("#guide-page");
 const pageTurner = document.querySelector("#page-turner");
 const prevButton = document.querySelector("#prev-button");
@@ -293,10 +395,78 @@ const readerDownload = document.querySelector("#reader-download");
 const readerDownloadLabel = document.querySelector("#reader-download-label");
 const stepRailTitle = document.querySelector("#step-rail-title");
 const currentUnitLabel = document.querySelector("#current-unit-label");
+const readerGuideLink = document.querySelector("#reader-guide-link");
+const readerGuideLinkImage = document.querySelector("#reader-guide-link-image");
+const readerGuideLinkLabel = document.querySelector("#reader-guide-link-label");
 
 let activeGuide = null;
 let currentPage = 0;
 let animationLocked = false;
+let zoomLevel = 1;
+const ZOOM_MIN = 0.75;
+const ZOOM_MAX = 2.5;
+const ZOOM_STEP = 0.25;
+
+function setZoom(value) {
+  if (!bookShell) return;
+
+  const clamped = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, value));
+  zoomLevel = Math.round(clamped * 100) / 100;
+  const isGuideFullscreen = document.fullscreenElement === bookWrap;
+
+  if (isGuideFullscreen) {
+    // In fullscreen, 100% means "fit the entire viewport". Higher zoom levels
+    // physically enlarge the page so the existing click-and-drag panning works.
+    bookShell.style.width = `${zoomLevel * 100}vw`;
+    bookShell.style.height = `${zoomLevel * 100}vh`;
+    bookShell.style.maxWidth = "none";
+  } else if (zoomLevel === 1) {
+    bookShell.style.width = "";
+    bookShell.style.height = "";
+    bookShell.style.maxWidth = "";
+  } else {
+    const baseWidth = activeGuide?.widerReader ? 900 : 790;
+    bookShell.style.width = `${zoomLevel * 100}%`;
+    bookShell.style.height = "";
+    bookShell.style.maxWidth = `${baseWidth * zoomLevel}px`;
+  }
+
+  const canPan = zoomLevel > 1;
+  if (bookViewport) {
+    bookViewport.classList.toggle("is-pannable", canPan);
+    bookViewport.setAttribute(
+      "aria-label",
+      canPan ? "Zoomed guide page. Click and drag to pan." : "Guide page"
+    );
+    if (!canPan) {
+      bookViewport.scrollLeft = 0;
+      bookViewport.scrollTop = 0;
+      bookViewport.classList.remove("is-panning");
+    }
+  }
+
+  const displayValue = `${Math.round(zoomLevel * 100)}%`;
+  if (zoomValue) zoomValue.textContent = displayValue;
+  if (fullscreenZoomValue) fullscreenZoomValue.textContent = displayValue;
+
+  if (zoomOutButton) zoomOutButton.disabled = zoomLevel <= ZOOM_MIN;
+  if (zoomInButton) zoomInButton.disabled = zoomLevel >= ZOOM_MAX;
+  if (fullscreenZoomOutButton) fullscreenZoomOutButton.disabled = zoomLevel <= ZOOM_MIN;
+  if (fullscreenZoomInButton) fullscreenZoomInButton.disabled = zoomLevel >= ZOOM_MAX;
+}
+
+function resetZoom() {
+  setZoom(1);
+}
+
+function updateFullscreenControl() {
+  if (!fullscreenButton) return;
+  const isFullscreen = document.fullscreenElement === bookWrap;
+  const label = isFullscreen ? "Exit full screen" : "Full screen";
+  fullscreenButton.setAttribute("aria-label", label);
+  fullscreenButton.setAttribute("title", label);
+  if (fullscreenLabel) fullscreenLabel.textContent = label;
+}
 
 function renderLibrary() {
   grid.innerHTML = "";
@@ -359,10 +529,39 @@ function openGuide(id) {
   activeGuide = guides.find((guide) => guide.id === id);
   if (!activeGuide) return;
 
+  if (bookShell) bookShell.style.aspectRatio = activeGuide.aspectRatio || "";
+  reader.classList.toggle("wide-guide", Boolean(activeGuide.widerReader));
   currentPage = 0;
+  resetZoom();
   readerShortTitle.textContent = activeGuide.shortTitle;
   if (stepRailTitle) stepRailTitle.textContent = activeGuide.railLabel || "Guide steps";
   if (currentUnitLabel) currentUnitLabel.textContent = activeGuide.currentLabel || "Current step";
+
+  // Some guides include a direct link to the system they describe.
+  if (readerGuideLink) {
+    if (activeGuide.readerLink) {
+      readerGuideLink.href = activeGuide.readerLink.url;
+      readerGuideLink.title = activeGuide.readerLink.label || "Open related system";
+      readerGuideLink.setAttribute("aria-label", activeGuide.readerLink.label || "Open related system");
+      if (readerGuideLinkImage) {
+        readerGuideLinkImage.src = activeGuide.readerLink.image;
+        readerGuideLinkImage.alt = activeGuide.readerLink.alt || activeGuide.readerLink.label || "Open related system";
+      }
+      if (readerGuideLinkLabel) {
+        readerGuideLinkLabel.textContent = activeGuide.readerLink.label || "Open related system";
+      }
+      readerGuideLink.hidden = false;
+    } else {
+      readerGuideLink.hidden = true;
+      readerGuideLink.removeAttribute("href");
+      readerGuideLink.removeAttribute("title");
+      readerGuideLink.removeAttribute("aria-label");
+      if (readerGuideLinkImage) {
+        readerGuideLinkImage.removeAttribute("src");
+        readerGuideLinkImage.alt = "";
+      }
+    }
+  }
 
   // Download controls are optional UI. Guard them so a missing control can never
   // prevent the guide itself from opening.
@@ -387,16 +586,28 @@ function openGuide(id) {
   document.body.classList.add("reader-open");
   reader.scrollTop = 0;
   closeReader.focus({ preventScroll: true });
-  history.replaceState({ guide: id }, "", `#guide=${id}`);
+  // Create an in-site history entry so the browser Back button closes
+  // the guide and returns to the guide library instead of leaving the site.
+  const guideHash = `#guide=${id}`;
+  if (location.hash !== guideHash) {
+    history.pushState({ guide: id }, "", guideHash);
+  } else {
+    history.replaceState({ guide: id }, "", guideHash);
+  }
 }
 
-function closeGuide() {
+function closeGuide(updateHistory = true) {
   reader.hidden = true;
   document.body.classList.remove("reader-open");
+  reader.classList.remove("wide-guide");
   activeGuide = null;
   currentPage = 0;
   if (document.fullscreenElement) document.exitFullscreen?.();
-  history.replaceState({}, "", window.location.pathname + window.location.search);
+
+  if (updateHistory && location.hash.startsWith("#guide=")) {
+    history.pushState({}, "", window.location.pathname + window.location.search);
+  }
+
   document.querySelector(`[data-guide="${guides[0].id}"]`)?.focus();
 }
 
@@ -441,6 +652,7 @@ function updateReader(animate = true, direction = "next") {
   }
 
   readerCounter.textContent = `${activeGuide.pageLabel || "Step"} ${currentPage + 1} of ${activeGuide.pages.length}`;
+  if (fullscreenPageCounter) fullscreenPageCounter.textContent = readerCounter.textContent;
   prevButton.disabled = currentPage === 0;
 
   const isLast = currentPage === activeGuide.pages.length - 1;
@@ -479,27 +691,122 @@ prevButton.addEventListener("click", () => changePage(currentPage - 1, "prev"));
 nextButton.addEventListener("click", () => {
   if (!activeGuide || animationLocked) return;
   if (currentPage === activeGuide.pages.length - 1) {
-    closeGuide();
-    document.querySelector("#guides")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (location.hash.startsWith("#guide=") && history.length > 1) {
+      history.back();
+      window.setTimeout(() => {
+        document.querySelector("#guides")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 80);
+    } else {
+      closeGuide(true);
+      document.querySelector("#guides")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
     return;
   }
   changePage(currentPage + 1, "next");
 });
 
-closeReader.addEventListener("click", closeGuide);
+closeReader.addEventListener("click", () => {
+  if (location.hash.startsWith("#guide=") && history.length > 1) {
+    history.back();
+  } else {
+    closeGuide(true);
+  }
+});
 
-fullscreenButton.addEventListener("click", async () => {
+zoomOutButton?.addEventListener("click", () => setZoom(zoomLevel - ZOOM_STEP));
+zoomInButton?.addEventListener("click", () => setZoom(zoomLevel + ZOOM_STEP));
+zoomResetButton?.addEventListener("click", resetZoom);
+fullscreenZoomOutButton?.addEventListener("click", () => setZoom(zoomLevel - ZOOM_STEP));
+fullscreenZoomInButton?.addEventListener("click", () => setZoom(zoomLevel + ZOOM_STEP));
+fullscreenZoomResetButton?.addEventListener("click", resetZoom);
+fullscreenExitButton?.addEventListener("click", async () => {
+  try {
+    if (document.fullscreenElement) await document.exitFullscreen?.();
+  } catch (_) {}
+});
+
+// When a page is enlarged, let users grab it directly and pan in any direction.
+let panPointerId = null;
+let panStartX = 0;
+let panStartY = 0;
+let panStartScrollLeft = 0;
+let panStartScrollTop = 0;
+
+bookViewport?.addEventListener("pointerdown", (event) => {
+  if (zoomLevel <= 1 || event.button !== 0) return;
+
+  panPointerId = event.pointerId;
+  panStartX = event.clientX;
+  panStartY = event.clientY;
+  panStartScrollLeft = bookViewport.scrollLeft;
+  panStartScrollTop = bookViewport.scrollTop;
+
+  bookViewport.classList.add("is-panning");
+  bookViewport.setPointerCapture?.(event.pointerId);
+  event.preventDefault();
+});
+
+bookViewport?.addEventListener("pointermove", (event) => {
+  if (panPointerId !== event.pointerId || zoomLevel <= 1) return;
+
+  const deltaX = event.clientX - panStartX;
+  const deltaY = event.clientY - panStartY;
+  bookViewport.scrollLeft = panStartScrollLeft - deltaX;
+  bookViewport.scrollTop = panStartScrollTop - deltaY;
+  event.preventDefault();
+});
+
+function endPan(event) {
+  if (panPointerId !== event.pointerId) return;
+  bookViewport?.releasePointerCapture?.(event.pointerId);
+  bookViewport?.classList.remove("is-panning");
+  panPointerId = null;
+}
+
+bookViewport?.addEventListener("pointerup", endPan);
+bookViewport?.addEventListener("pointercancel", endPan);
+bookViewport?.addEventListener("lostpointercapture", () => {
+  bookViewport?.classList.remove("is-panning");
+  panPointerId = null;
+});
+
+fullscreenButton?.addEventListener("click", async () => {
   try {
     if (!document.fullscreenElement) {
-      await reader.requestFullscreen?.();
+      await bookWrap?.requestFullscreen?.();
     } else {
       await document.exitFullscreen?.();
     }
   } catch (_) {}
 });
 
+document.addEventListener("fullscreenchange", () => {
+  updateFullscreenControl();
+  // Always begin and end fullscreen fitted neatly to the available screen.
+  setZoom(1);
+});
+updateFullscreenControl();
+setZoom(1);
+
 document.addEventListener("keydown", (event) => {
   if (reader.hidden || !activeGuide) return;
+
+  if ((event.ctrlKey || event.metaKey) && (event.key === "+" || event.key === "=")) {
+    event.preventDefault();
+    setZoom(zoomLevel + ZOOM_STEP);
+    return;
+  }
+  if ((event.ctrlKey || event.metaKey) && event.key === "-") {
+    event.preventDefault();
+    setZoom(zoomLevel - ZOOM_STEP);
+    return;
+  }
+  if ((event.ctrlKey || event.metaKey) && event.key === "0") {
+    event.preventDefault();
+    resetZoom();
+    return;
+  }
+
   if (event.key === "ArrowRight") {
     event.preventDefault();
     if (currentPage < activeGuide.pages.length - 1) changePage(currentPage + 1, "next");
@@ -513,11 +820,15 @@ document.addEventListener("keydown", (event) => {
 
 let touchStartX = null;
 reader.addEventListener("touchstart", (event) => {
+  if (zoomLevel > 1) {
+    touchStartX = null;
+    return;
+  }
   touchStartX = event.changedTouches[0].clientX;
 }, { passive: true });
 
 reader.addEventListener("touchend", (event) => {
-  if (touchStartX === null) return;
+  if (zoomLevel > 1 || touchStartX === null) return;
   const delta = event.changedTouches[0].clientX - touchStartX;
   touchStartX = null;
   if (Math.abs(delta) < 70) return;
@@ -537,9 +848,83 @@ document.querySelectorAll("[data-home]").forEach((link) => {
 function openFromHash() {
   const match = location.hash.match(/^#guide=(.+)$/);
   if (match && guides.some((g) => g.id === match[1])) {
-    openGuide(match[1]);
+    const id = match[1];
+    activeGuide = guides.find((guide) => guide.id === id);
+    if (!activeGuide) return;
+
+    if (bookShell) bookShell.style.aspectRatio = activeGuide.aspectRatio || "";
+    reader.classList.toggle("wide-guide", Boolean(activeGuide.widerReader));
+    currentPage = 0;
+    readerShortTitle.textContent = activeGuide.shortTitle;
+    if (stepRailTitle) stepRailTitle.textContent = activeGuide.railLabel || "Guide steps";
+    if (currentUnitLabel) currentUnitLabel.textContent = activeGuide.currentLabel || "Current step";
+
+    if (readerGuideLink) {
+      if (activeGuide.readerLink) {
+        readerGuideLink.href = activeGuide.readerLink.url;
+        readerGuideLink.title = activeGuide.readerLink.label || "Open related system";
+        readerGuideLink.setAttribute("aria-label", activeGuide.readerLink.label || "Open related system");
+        if (readerGuideLinkImage) {
+          readerGuideLinkImage.src = activeGuide.readerLink.image;
+          readerGuideLinkImage.alt = activeGuide.readerLink.alt || activeGuide.readerLink.label || "Open related system";
+        }
+        if (readerGuideLinkLabel) {
+          readerGuideLinkLabel.textContent = activeGuide.readerLink.label || "Open related system";
+        }
+        readerGuideLink.hidden = false;
+      } else {
+        readerGuideLink.hidden = true;
+        readerGuideLink.removeAttribute("href");
+        readerGuideLink.removeAttribute("title");
+        readerGuideLink.removeAttribute("aria-label");
+        if (readerGuideLinkImage) {
+          readerGuideLinkImage.removeAttribute("src");
+          readerGuideLinkImage.alt = "";
+        }
+      }
+    }
+
+    if (readerDownload) {
+      if (activeGuide.download) {
+        readerDownload.href = activeGuide.download.url;
+        readerDownload.setAttribute("download", activeGuide.download.filename || "guide.pdf");
+        if (readerDownloadLabel) {
+          readerDownloadLabel.textContent = activeGuide.download.label || "Download PDF";
+        }
+        readerDownload.hidden = false;
+      } else {
+        readerDownload.hidden = true;
+        readerDownload.removeAttribute("href");
+        readerDownload.removeAttribute("download");
+      }
+    }
+
+    buildStepList();
+    updateReader(false);
+    reader.hidden = false;
+    document.body.classList.add("reader-open");
+    reader.scrollTop = 0;
   }
 }
+
+// Keep browser Back/Forward navigation inside the site:
+// Back closes an open guide; Forward can reopen it.
+window.addEventListener("popstate", () => {
+  const match = location.hash.match(/^#guide=(.+)$/);
+
+  if (match && guides.some((g) => g.id === match[1])) {
+    const targetId = match[1];
+
+    if (!activeGuide || activeGuide.id !== targetId || reader.hidden) {
+      openFromHash();
+    }
+    return;
+  }
+
+  if (!reader.hidden) {
+    closeGuide(false);
+  }
+});
 
 renderLibrary();
 openFromHash();

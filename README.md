@@ -38,3 +38,12 @@ No framework or build process is required.
 - E-Sign guide updated to Version 2.2 with all five pages and downloadable source PDF
 
 - ODPS Atamis Standard Operating Procedures (SOPs): all 21 pages plus downloadable source PDF
+## Reader viewing controls
+
+- Full-screen mode from the reader toolbar
+- Zoom out / reset / zoom in controls from 75% to 250%
+- Zoom level is shown as a percentage and resets when a new guide is opened
+- Keyboard shortcuts while a guide is open: Ctrl/Cmd + plus, minus, or 0
+
+
+- ODPS Interim Standing Financial Instructions: 9-page landscape guide with PDF download
