@@ -72,3 +72,16 @@ No framework or build process is required.
 - Added a Recommendation Reports document library with direct downloads and cleaned display/download names.
 - Bundled all supplied recommendation-report templates, committee cover sheets, Agreement Approval,
   IG/eSign guide and Clinical/Technical Variation document.
+
+- Added `How to Book Annual Leave on Loop` (Version 2.2) as a six-page guide.
+- Added all six Loop guide pages to the book-style reader and bundled the original PDF for download.
+
+- Added RLDatix Loop to the homepage Quick Access buttons using the supplied Loop artwork.
+- Added the same Loop button beneath the Current Page panel in the Loop Annual Leave guide reader.
+- Loop opens in a new tab at https://web.loop.allocate-cloud.co.uk/loop.
+
+- Added the Corporate & Professional Services Dashboard to the Tools library.
+- The dashboard is stored at a stable path (`tools/corporate-professional-services-dashboard.html`) so future refreshed dashboard files can replace the current snapshot without changing the Tools link.
+- Added a discreet Back to ODPS Tools link to the dashboard while retaining its existing filters, charts, contract detail view, CSV export and print/PDF behaviour.
+
+- Refreshed the Corporate & Professional Services Dashboard with the latest supplied self-contained version, retaining the stable Tools URL and ODPS Tools return link.

@@ -278,6 +278,33 @@
         linear-gradient(155deg, #008a96, #006f85 52%, #064884);
     }
 
+
+    .dashboard-icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 178px;
+      height: 178px;
+      transform: translate(-50%, -50%);
+      color: rgba(255,255,255,.96);
+    }
+
+    .dashboard-icon rect,
+    .dashboard-icon path,
+    .dashboard-icon circle {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .tool-card[data-tool="corporate-dashboard"] .tool-visual {
+      background:
+        radial-gradient(circle at 72% 20%, rgba(82,222,213,.34), transparent 22%),
+        linear-gradient(155deg, #0b6f77, #075560 54%, #073b61);
+    }
+
     @media (max-width: 850px) {
       .tools-grid { grid-template-columns: 1fr; }
     }
@@ -408,6 +435,40 @@
               </div>
 
               <button class="tool-collapse" type="button" aria-label="Collapse UHD Recommendation Reports tool">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 12 4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </article>
+
+          <article class="tool-card is-collapsed" id="corporate-dashboard-card" data-tool="corporate-dashboard">
+            <button class="tool-summary" type="button" aria-expanded="false" aria-controls="corporate-dashboard-details">
+              <strong>Corporate &amp; Professional Services Dashboard</strong>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+
+            <div class="tool-expanded" id="corporate-dashboard-details">
+              <div class="tool-content">
+                <div class="tool-kicker">Portfolio intelligence</div>
+                <h2>Corporate &amp; Professional Services Dashboard</h2>
+                <p>Interactive portfolio view of assigned contracts and mapped cost centres across UHD, DCH, DHC and NHS Dorset ICB, with filters for value, volume, status, expiry exposure, supplier concentration and data quality.</p>
+                <div class="tool-actions">
+                  <a class="primary-button" href="tools/corporate-professional-services-dashboard.html">
+                    Open dashboard
+                    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="tool-visual" aria-hidden="true">
+                <svg class="dashboard-icon" viewBox="0 0 180 180">
+                  <rect x="28" y="25" width="124" height="128" rx="13"/>
+                  <path d="M47 131V95M72 131V72M97 131v-21M122 131V54"/>
+                  <path d="M44 49h42"/>
+                  <circle cx="129" cy="48" r="8"/>
+                </svg>
+              </div>
+
+              <button class="tool-collapse" type="button" aria-label="Collapse Corporate and Professional Services Dashboard">
                 <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 12 4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
             </div>

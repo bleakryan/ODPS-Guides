@@ -357,6 +357,68 @@ const guides = [
         alt: "ODPS Interim SFI requester checklist supplementary guidance page."
       }
     ]
+  }  ,
+  {
+    id: "loop-annual-leave",
+    shortTitle: "Loop Annual Leave",
+    kicker: "Annual leave",
+    title: "How to Book Annual Leave on Loop",
+    description:
+      "A six-page Version 2.2 step-by-step guide covering opening Loop, entering an annual-leave request, checking and submitting it, and confirming and tracking the submitted request.",
+    duration: "Approx. 5–10 minutes",
+    coverTitle: "Annual Leave<br>on Loop",
+    pageLabel: "Page",
+    railLabel: "Guide pages",
+    currentLabel: "Current page",
+    readerLink: {
+      url: "https://web.loop.allocate-cloud.co.uk/loop",
+      image: "assets/loop-open-link.png",
+      alt: "RLDatix Loop",
+      label: "Open RLDatix Loop"
+    },
+    download: {
+      url: "assets/downloads/ODPS_Loop_Annual_Leave_Guide_Version_2.2.pdf",
+      filename: "ODPS Loop Annual Leave Guide Version 2.2.pdf",
+      label: "Download PDF"
+    },
+    pages: [
+      {
+        title: "How to Book Annual Leave on Loop",
+        description: "Cover page for the ODPS Version 2.2 step-by-step guide to booking annual leave on Loop.",
+        image: "assets/loop-annual-leave-page-1.png",
+        alt: "Cover of the ODPS guide How to Book Annual Leave on Loop, Version 2.2."
+      },
+      {
+        title: "To Begin: Open Loop",
+        description: "Open Loop from Managed Bookmarks under Workforce Systems, log in and open Rostering.",
+        image: "assets/loop-annual-leave-page-2.png",
+        alt: "ODPS Loop annual leave guide page showing how to open Loop from Managed Bookmarks, log in and select Rostering."
+      },
+      {
+        title: "Open Annual Leave in Loop",
+        description: "Open Rostering, select Leave, scroll to the Request Leave Form and review your annual-leave entitlement and existing leave.",
+        image: "assets/loop-annual-leave-page-3.png",
+        alt: "ODPS Loop annual leave guide page showing Rostering, Leave, Annual Leave entitlement and the Request Leave Form."
+      },
+      {
+        title: "Enter your leave request",
+        description: "Choose full or partial day leave, enter the number of days, select the start date and use Set so Loop calculates the end date.",
+        image: "assets/loop-annual-leave-page-4.png",
+        alt: "ODPS Loop annual leave guide page showing how to enter full-day or partial-day leave, number of days and start date."
+      },
+      {
+        title: "Check and submit the request",
+        description: "Review the calculated end date, add a note if needed, confirm Annual Leave as the reason and submit the leave request.",
+        image: "assets/loop-annual-leave-page-5.png",
+        alt: "ODPS Loop annual leave guide page showing checks before submitting an annual leave request."
+      },
+      {
+        title: "Confirm and track your request",
+        description: "Look for the submission confirmation and check the new request in the Episodes list, including its status and requested dates.",
+        image: "assets/loop-annual-leave-page-6.png",
+        alt: "ODPS Loop annual leave guide page showing the submitted confirmation and annual leave request in the Episodes list."
+      }
+    ]
   }
 ];
 
